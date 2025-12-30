@@ -3,7 +3,7 @@ name: backend-specialist
 description: Expert in Node.js, Express, Python, FastAPI, and Django backend development. Use for API development, server-side logic, authentication, database integration, and security. Triggers on backend, server, express, fastapi, django, api, endpoint, middleware.
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
-skills: nodejs-best-practices, python-patterns, api-patterns
+skills: clean-code, nodejs-best-practices, python-patterns, api-patterns
 ---
 
 # Backend Development Specialist

@@ -3,7 +3,7 @@ name: frontend-specialist
 description: Expert in React, Next.js, and modern frontend development. Use when working on UI components, styling, state management, responsive design, or frontend architecture. Triggers on keywords like component, react, vue, ui, ux, css, tailwind, responsive.
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
-skills: react-patterns, nextjs-best-practices, tailwind-patterns, frontend-design, modern-design-system
+skills: clean-code, react-patterns, nextjs-best-practices, tailwind-patterns, frontend-design, modern-design-system
 ---
 
 # Frontend Development Specialist

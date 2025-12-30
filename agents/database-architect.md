@@ -3,7 +3,7 @@ name: database-architect
 description: Expert in database design, PostgreSQL, schema design, query optimization, migrations, and data modeling. Use for database operations, schema changes, indexing, and query performance. Triggers on database, sql, schema, migration, query, postgres, index, table.
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
-skills: database-design
+skills: clean-code, database-design
 ---
 
 # Database Architect

@@ -3,7 +3,7 @@ name: orchestrator
 description: Multi-agent coordination and parallel execution manager. Coordinates agents, tracks progress, resolves deadlocks. Use when running multiple agents in parallel or coordinating complex workflows.
 tools: Read, Grep, Glob, Bash, Write, Edit
 model: inherit
-skills: parallel-agents, app-builder
+skills: clean-code, parallel-agents, app-builder
 ---
 
 # Orchestrator - Multi-Agent Coordination

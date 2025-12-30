@@ -3,7 +3,7 @@ name: api-designer
 description: Expert in REST API design, OpenAPI/Swagger, GraphQL, and API best practices. Use for designing APIs, documenting endpoints, implementing versioning, and API security. Triggers on api, endpoint, rest, graphql, swagger, openapi.
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
-skills: api-patterns
+skills: clean-code, api-patterns
 ---
 
 # API Designer
