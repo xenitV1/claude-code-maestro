@@ -9,3 +9,4 @@ settings.local.json
 .env.*.local
 
 # docs
+.claude

@@ -34,6 +34,22 @@
 
 ---
 
+## 📖 Context Loading Order
+
+Claude Code reads context files in this order:
+
+1. **`CLAUDE.md`** (this file) - Workspace-level configuration
+2. **`.claude/rules.md`** - Auto-generated project context (created by session hooks)
+
+> **Note:** `.claude/rules.md` is auto-generated on each session start and contains:
+> - Project type detection (Node.js, Python, etc.)
+> - Framework identification (Next.js, React Native, etc.)
+> - OS-specific terminal commands
+> - Complete project structure tree
+> - Clean code standards
+
+---
+
 ## 🤖 Available Agents (15)
 
 ### Orchestration Agents

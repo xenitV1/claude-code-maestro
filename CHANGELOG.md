@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added dynamic `.claude/rules.md` generation in each project
   - Added `load_clean_code_skill()` to inject clean code standards into project context
   - Added `get_os_info()` and `get_os_commands()` functions
+- **Project Structure Discovery**
+  - Added `load_discovery_structure()` to inject full project tree into context
+  - Discovery report structure now included in auto-generated `.claude/rules.md`
+- **Context Loading Documentation**
+  - Added "Context Loading Order" section to CLAUDE.md
+  - Documents that CLAUDE.md loads first, then .claude/rules.md
 
 ### Changed
 - Session hooks now create `project/.claude/rules.md` with:
@@ -21,8 +27,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - OS information and shell type
   - OS-specific terminal commands
   - Project-specific commands (npm, python, etc.)
+  - Complete project structure tree from discovery report
   - Clean code standards from `skills/clean-code/SKILL.md`
 - Fixed frontmatter parsing in `load_clean_code_skill()` - now correctly extracts content after YAML
+
+### Fixed
+- **Critical:** Fixed `AttributeError: 'NoneType' object has no attribute 'upper'` in `session_hooks.py`
+  - Added `safe_upper()` function to handle None values in project type detection
+  - Framework projects (like Maestro itself) no longer crash hooks
+- Debug log now clears on each session start (`clear_debug_log()` in `main()`)
+- Prevents log file from growing indefinitely across sessions
 
 ### Removed
 - **Terminal Error Learning System** (broken hooks compatibility)

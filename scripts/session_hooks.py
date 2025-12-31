@@ -19,6 +19,16 @@ from typing import Dict, Any, Optional
 # Debug logging
 DEBUG_LOG = Path.home() / ".claude" / "data" / "hook_debug.log"
 
+
+def clear_debug_log():
+    """Clear debug log at the start of each session."""
+    try:
+        DEBUG_LOG.parent.mkdir(parents=True, exist_ok=True)
+        DEBUG_LOG.write_text(f"[{datetime.now().isoformat()}] === NEW SESSION ===\n")
+    except:
+        pass
+
+
 def debug_log(message: str):
     """Write debug log."""
     try:
@@ -355,6 +365,48 @@ def load_clean_code_skill() -> str:
     return ""
 
 
+def load_discovery_structure(project_path: str) -> str:
+    """Load and format project structure from discovery report."""
+    project_name = Path(project_path).name
+    safe_name = "".join(c if c.isalnum() or c in '-_' else '_' for c in project_name)
+    discovery_file = PROJECTS_DIR / safe_name / "discovery-report.json"
+
+    if not discovery_file.exists():
+        return ""
+
+    try:
+        report = json.loads(discovery_file.read_text(encoding="utf-8"))
+        structure = report.get("structure", {})
+
+        if not structure:
+            return ""
+
+        # Format structure as tree
+        def format_tree(data: dict, indent: int = 0) -> list:
+            lines = []
+            prefix = "  " * indent
+            for key, value in sorted(data.items()):
+                if value == "file":
+                    lines.append(f"{prefix}{key}")
+                elif isinstance(value, dict):
+                    lines.append(f"{prefix}{key}/")
+                    lines.extend(format_tree(value, indent + 1))
+            return lines
+
+        tree_lines = format_tree(structure)
+
+        return f"""## 📂 Project Structure
+
+```
+{chr(10).join(tree_lines)}
+```
+
+"""
+    except Exception as e:
+        debug_log(f"Could not load discovery structure: {e}")
+        return ""
+
+
 def generate_context_markdown(session_info: Dict, analysis: Dict, os_info: Dict[str, str]) -> str:
     """Generate markdown context for AI to read."""
     project_name = session_info.get("projectName", "Unknown")
@@ -369,11 +421,20 @@ def generate_context_markdown(session_info: Dict, analysis: Dict, os_info: Dict[
     # Load clean code skill
     clean_code_content = load_clean_code_skill()
 
+    # Load discovery structure
+    structure_content = load_discovery_structure(project_path)
+
+    # Safe string conversion - handle None values
+    def safe_upper(val: str) -> str:
+        if val is None or val == 'Unknown':
+            return 'Unknown'
+        return str(val).upper()
+
     md = f"""# 📁 Project Context
 
 **Project:** `{project_name}`
-**Framework:** `{framework}`
-**Type:** `{project_type}`
+**Framework:** `{framework or 'Unknown'}`
+**Type:** `{project_type or 'Unknown'}`
 **Path:** `{project_path}`
 **Detected:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
@@ -395,9 +456,9 @@ def generate_context_markdown(session_info: Dict, analysis: Dict, os_info: Dict[
 
 | Property | Value |
 |----------|-------|
-| **Project Type** | {project_type.upper() if project_type != 'Unknown' else 'Unknown'} |
-| **Framework** | {framework.upper() if framework != 'Unknown' else 'None'} |
-| **Platform** | {platform.upper() if platform != 'Unknown' else 'General'} |
+| **Project Type** | {safe_upper(project_type)} |
+| **Framework** | {safe_upper(framework)} |
+| **Platform** | {safe_upper(platform)} |
 
 ---
 
@@ -407,6 +468,7 @@ def generate_context_markdown(session_info: Dict, analysis: Dict, os_info: Dict[
 
 ---
 
+{structure_content}
 {clean_code_content}
 
 ---
@@ -544,6 +606,9 @@ def session_end(project_path: str, silent: bool = False):
 
 def main():
     """Main function."""
+    # Clear debug log at the very start of each hook invocation
+    clear_debug_log()
+
     debug_log(f"MAIN called: argv={sys.argv}")
 
     if len(sys.argv) < 2:
