@@ -5,6 +5,37 @@ All notable changes to Maestro will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.6] - 2026-01-01
+
+### Added
+- **Dependency Scanner** 📊
+  - New `scripts/dependency_scanner.py` for file relationship tracking
+  - Detects imports (ES6, CommonJS, Python), API calls (fetch, axios), DB models (Prisma)
+  - Integrated into `session_hooks.py` - runs automatically on session start
+  - `@/` alias resolution for React/Next.js projects
+  - File tree annotations showing dependencies (`file.ts ← A.tsx, B.tsx`)
+  - Legend and warning notes in CODEBASE.md output
+- **SEO Specialist Agent** 🎯
+  - New `agents/seo-specialist.md` for SEO and GEO optimization
+  - Uses `seo-fundamentals` and `geo-fundamentals` skills
+- **Maestro System Requirements** ⚠️
+  - CLAUDE.md now includes mandatory Maestro usage section
+  - File Dependency Awareness documentation
+  - Requirement to check CODEBASE.md before making changes
+
+### Changed
+- Updated skill assignments for 6 existing agents:
+  - `frontend-specialist`: +artifacts-builder
+  - `orchestrator`: +behavioral-modes
+  - `test-engineer`: +code-review-checklist
+  - `project-planner`: +conversation-manager
+  - `devops-engineer`: +git-worktrees, +powershell-windows
+  - `backend-specialist`: +mcp-builder
+- Updated counts: 17 agents, 40 skills, 8 scripts
+- `setup.py`: added dependency_scanner.py to install list
+
+---
+
 ## [0.0.5] - 2026-01-01
 
 ### Added
