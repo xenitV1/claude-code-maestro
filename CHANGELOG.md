@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Detects imports (ES6, CommonJS, Python), API calls (fetch, axios), DB models (Prisma)
   - Integrated into `session_hooks.py` - runs automatically on session start
   - `@/` alias resolution for React/Next.js projects
+  - Relative path resolution (`./`, `../`) with proper normalization
+  - **Python import support**: relative imports (`.module`, `..package`), absolute imports
+  - Standard library filtering (os, sys, json, etc. automatically skipped)
   - File tree annotations showing dependencies (`file.ts ← A.tsx, B.tsx`)
   - Legend and warning notes in CODEBASE.md output
 - **SEO Specialist Agent** 🎯
