@@ -79,6 +79,7 @@ def get_all_scripts() -> List[str]:
     return [
         "session_hooks.py",
         "explorer_helper.py",
+        "dependency_scanner.py",
         "auto_preview.py",
         "parallel_orchestrator.py",
         "session_manager.py",
@@ -125,10 +126,10 @@ def show_features():
     table.add_column("Description", style="white")
     table.add_column("Count", justify="right", style="green")
 
-    table.add_row("Scripts", "Automation hooks & utilities", "10")
-    table.add_row("Agents", "Specialized AI personas", "15")
-    table.add_row("Skills", "Knowledge resources & patterns", "40+")
-    table.add_row("Commands", "Slash commands for Claude", "8")
+    table.add_row("Scripts", "Automation hooks & utilities", "8")
+    table.add_row("Agents", "Specialized AI personas", "17")
+    table.add_row("Skills", "Knowledge resources & patterns", "40")
+    table.add_row("Commands", "Slash commands for Claude", "9")
     table.add_row("Templates", "Project scaffolds", "12")
 
     console.print(table)

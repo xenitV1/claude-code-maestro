@@ -367,8 +367,13 @@ def load_clean_code_skill() -> str:
     return ""
 
 
-def load_discovery_structure(project_path: str) -> str:
-    """Load and format project structure from discovery report."""
+def load_discovery_structure(project_path: str, import_counts: dict = None) -> str:
+    """Load and format project structure from discovery report.
+    
+    Args:
+        project_path: Path to the project
+        import_counts: Dict mapping file paths to list of files that import them
+    """
     project_name = Path(project_path).name
     safe_name = "".join(c if c.isalnum() or c in '-_' else '_' for c in project_name)
     discovery_file = PROJECTS_DIR / safe_name / "discovery-report.json"
@@ -383,21 +388,70 @@ def load_discovery_structure(project_path: str) -> str:
         if not structure:
             return ""
 
-        # Format structure as tree
-        def format_tree(data: dict, indent: int = 0) -> list:
+        # Format structure as tree with import info
+        def format_tree(data: dict, current_path: str = "", indent: int = 0) -> list:
             lines = []
             prefix = "  " * indent
             for key, value in sorted(data.items()):
+                full_path = f"{current_path}/{key}" if current_path else key
+                # Normalize path separators for matching
+                normalized_path = full_path.replace("\\", "/")
+                
                 if value == "file":
-                    lines.append(f"{prefix}{key}")
+                    line = f"{prefix}{key}"
+                    # Check if this file has dependents
+                    if import_counts:
+                        # Try different path formats to match
+                        dependents = None
+                        
+                        # Paths to try matching
+                        paths_to_check = [
+                            normalized_path,  # Full path: src/constants/index.ts
+                            normalized_path.replace('.tsx', '').replace('.ts', ''),  # Without extension
+                        ]
+                        
+                        # Also try parent directory if this is index.ts
+                        if key in ('index.ts', 'index.tsx'):
+                            parent_path = '/'.join(normalized_path.split('/')[:-1])
+                            paths_to_check.append(parent_path)
+                        
+                        for path_key, deps in import_counts.items():
+                            path_key_normalized = path_key.replace("\\\\", "/")
+                            
+                            # Check if any of our paths match
+                            for check_path in paths_to_check:
+                                if (path_key_normalized == check_path or 
+                                    path_key_normalized.endswith('/' + check_path) or
+                                    check_path.endswith('/' + path_key_normalized) or
+                                    path_key_normalized.endswith(key)):
+                                    dependents = deps
+                                    break
+                            
+                            if dependents:
+                                break
+                        
+                        if dependents and len(dependents) > 0:
+                            # Show max 3 file names + count if more
+                            dep_names = [Path(d).name for d in dependents[:3]]
+                            suffix = f" ← {', '.join(dep_names)}"
+                            if len(dependents) > 3:
+                                suffix += f" +{len(dependents) - 3} more"
+                            line += suffix
+                    
+                    lines.append(line)
                 elif isinstance(value, dict):
                     lines.append(f"{prefix}{key}/")
-                    lines.extend(format_tree(value, indent + 1))
+                    lines.extend(format_tree(value, full_path, indent + 1))
             return lines
 
         tree_lines = format_tree(structure)
 
         return f"""## 📂 Project Structure
+
+> **Legend:** `file.ts ← A.tsx, B.tsx` = This file is **imported by** A.tsx and B.tsx.
+> Changing this file will affect those files.
+>
+> ⚠️ **Note:** If a file has no ← annotation but you see imports in the actual code, this dependency is not yet tracked or is incomplete in CODEBASE.md.
 
 ```
 {chr(10).join(tree_lines)}
@@ -407,6 +461,153 @@ def load_discovery_structure(project_path: str) -> str:
     except Exception as e:
         debug_log(f"Could not load discovery structure: {e}")
         return ""
+
+
+def scan_file_dependencies(project_path: str, max_files: int = 200) -> tuple:
+    """Scan project files for dependencies.
+    
+    Returns:
+        tuple: (markdown_summary, reverse_deps_dict)
+               reverse_deps_dict maps import paths to list of files that import them
+    """
+    import re
+    
+    root = Path(project_path).resolve()
+    
+    SCANNABLE_EXTENSIONS = {'.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.py', '.vue', '.svelte'}
+    SKIP_DIRS = {'node_modules', '.git', '.next', 'dist', 'build', '__pycache__', 'venv', '.venv'}
+    
+    summary = {
+        "total_files": 0,
+        "api_endpoints": set(),
+        "db_models": set(),
+        "high_impact_files": {}
+    }
+    
+    file_imports = {}  # file -> list of imports
+    file_count = 0
+    
+    try:
+        for file_path in root.rglob("*"):
+            if not file_path.is_file():
+                continue
+            if file_path.suffix.lower() not in SCANNABLE_EXTENSIONS:
+                continue
+            if any(skip_dir in file_path.parts for skip_dir in SKIP_DIRS):
+                continue
+            
+            file_count += 1
+            if file_count > max_files:
+                break
+            
+            try:
+                content = file_path.read_text(encoding='utf-8', errors='ignore')
+                rel_path = str(file_path.relative_to(root))
+                
+                # Extract imports (JS/TS)
+                imports = re.findall(r"from\s+['\"]([^'\"]+)['\"]", content)
+                imports += re.findall(r"require\s*\(\s*['\"]([^'\"]+)['\"]\s*\)", content)
+                
+                # Track local imports for reverse deps
+                local_imports = [imp for imp in imports if imp.startswith('.') or imp.startswith('@/')]
+                if local_imports:
+                    file_imports[rel_path] = local_imports
+                
+                # Extract API calls
+                api_calls = re.findall(r"fetch\s*\(\s*['\"`]([^'\"`]+)['\"`]", content)
+                api_calls += re.findall(r"axios\s*\.\s*(?:get|post|put|delete|patch)\s*\(\s*['\"`]([^'\"`]+)['\"`]", content)
+                for call in api_calls:
+                    if '/api/' in call or call.startswith('/'):
+                        summary["api_endpoints"].add(call.split('?')[0])  # Remove query params
+                
+                # Extract DB models (Prisma)
+                db_models = re.findall(r"(?:db|prisma)\s*\.\s*(\w+)\s*\.\s*(?:findMany|findUnique|create|update|delete)", content)
+                summary["db_models"].update(db_models)
+                
+                summary["total_files"] += 1
+                
+            except Exception as e:
+                debug_log(f"Error scanning {file_path}: {e}")
+                continue
+        
+        # Build reverse dependencies (import path -> list of files that import it)
+        reverse_deps = {}  # Maps resolved path to list of importing files
+        import_counts = {}
+        
+        def resolve_import_alias(imp: str) -> str:
+            """Resolve import path aliases to actual paths."""
+            # Handle @/ alias (common in React/Next.js projects)
+            if imp.startswith('@/'):
+                resolved = 'src/' + imp[2:]  # @/constants -> src/constants
+            elif imp.startswith('~/'):
+                resolved = imp[2:]  # ~/utils -> utils
+            else:
+                resolved = imp
+            
+            # Add index.ts/.tsx if path looks like a directory
+            # e.g., src/constants -> src/constants/index.ts
+            return resolved
+        
+        for importing_file, imports in file_imports.items():
+            for imp in imports:
+                # Resolve alias to actual path
+                resolved_path = resolve_import_alias(imp)
+                
+                # Store both original and resolved for matching
+                if resolved_path not in reverse_deps:
+                    reverse_deps[resolved_path] = []
+                reverse_deps[resolved_path].append(importing_file)
+                
+                # Also store with /index.ts for directory imports
+                if not resolved_path.endswith('.ts') and not resolved_path.endswith('.tsx'):
+                    index_path = resolved_path + '/index.ts'
+                    if index_path not in reverse_deps:
+                        reverse_deps[index_path] = []
+                    reverse_deps[index_path].append(importing_file)
+                
+                if imp not in import_counts:
+                    import_counts[imp] = 0
+                import_counts[imp] += 1
+        
+        # Get top 5 most imported for summary
+        sorted_imports = sorted(import_counts.items(), key=lambda x: x[1], reverse=True)[:5]
+        summary["high_impact_files"] = {k: v for k, v in sorted_imports if v > 1}
+        
+    except Exception as e:
+        debug_log(f"Dependency scan error: {e}")
+        return "", {}
+    
+    # Generate markdown
+    if summary["total_files"] == 0:
+        return ""
+    
+    md_lines = ["## 📊 File Dependencies\n"]
+    md_lines.append(f"> Scanned {summary['total_files']} files\n")
+    
+    if summary["api_endpoints"]:
+        md_lines.append("### API Endpoints Used\n")
+        md_lines.append("```")
+        for endpoint in sorted(summary["api_endpoints"]):
+            md_lines.append(endpoint)
+        md_lines.append("```\n")
+    
+    if summary["db_models"]:
+        md_lines.append("### Database Models\n")
+        md_lines.append("```")
+        for model in sorted(summary["db_models"]):
+            md_lines.append(model)
+        md_lines.append("```\n")
+    
+    if summary["high_impact_files"]:
+        md_lines.append("### High-Impact Files\n")
+        md_lines.append("*Files imported by multiple other files:*\n")
+        md_lines.append("| File | Imported by |")
+        md_lines.append("|------|-------------|")
+        for file_path, count in summary["high_impact_files"].items():
+            md_lines.append(f"| `{file_path}` | {count} files |")
+        md_lines.append("")
+    
+    return "\n".join(md_lines), reverse_deps
 
 
 def generate_context_markdown(session_info: Dict, analysis: Dict, os_info: Dict[str, str]) -> str:
@@ -423,8 +624,11 @@ def generate_context_markdown(session_info: Dict, analysis: Dict, os_info: Dict[
     # Load clean code skill
     clean_code_content = load_clean_code_skill()
 
-    # Load discovery structure
-    structure_content = load_discovery_structure(project_path)
+    # Scan file dependencies first to get reverse deps
+    dependency_content, reverse_deps = scan_file_dependencies(project_path)
+
+    # Load discovery structure with dependency annotations
+    structure_content = load_discovery_structure(project_path, reverse_deps)
 
     # Safe string conversion - handle None values
     def safe_upper(val: str) -> str:
@@ -479,6 +683,7 @@ def generate_context_markdown(session_info: Dict, analysis: Dict, os_info: Dict[
 ---
 
 {structure_content}
+{dependency_content}
 {clean_code_content}
 
 ---

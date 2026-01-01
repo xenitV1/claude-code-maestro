@@ -8,8 +8,9 @@ These run automatically via `settings.json` hooks:
 
 | Script | Hook | Purpose |
 |--------|------|---------|
-| [session_hooks.py](session_hooks.py) | SessionStart/End | Project detection, session tracking |
+| [session_hooks.py](session_hooks.py) | SessionStart/End | Project detection, session tracking, dependency analysis |
 | [explorer_helper.py](explorer_helper.py) | SessionStart | Deep project discovery |
+| [dependency_scanner.py](dependency_scanner.py) | SessionStart | 🆕 File dependency analysis (imports, API calls) |
 
 ## Utility Scripts
 
