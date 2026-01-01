@@ -16,10 +16,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Platform-specific path handling and command execution
   - Automated installation with `make install` command
   - Installation verification with `make verify` command
+- **Architecture Skill** 🏗️
+  - Added `skills/architecture/SKILL.md` - Architectural decision framework
+  - Requirements-driven architecture approach
+  - Trade-off analysis and ADR documentation
+  - Pattern selection guidelines with decision trees
+  - Simplicity-first principle
+  - Examples for MVP, SaaS, and Enterprise projects
 
 ### Changed
 - Split `settings.example.json` into platform-specific files
 - Updated setup process to automatically detect OS and use appropriate settings
+- Fixed `explorer-agent.md` to reference correct architecture skill
 
 ### Removed
 - Removed `settings.example.json` (replaced by platform-specific files)
