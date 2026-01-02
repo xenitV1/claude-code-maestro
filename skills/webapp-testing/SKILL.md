@@ -3,12 +3,31 @@ name: webapp-testing
 description: Web application testing with Playwright including E2E tests, visual testing, and CI integration.
 ---
 
-# Web App Testing
+# Web App Testing & Deep Audit
 
-> Source: travisvn/awesome-claude-skills
+> **Maestro Quality Standard:** AI should pro-actively discover and test everything, including routes, APIs, and hidden components.
 
-## Overview
-End-to-end testing of web applications using Playwright.
+## 🗺️ Deep Audit & Discovery
+When asked to "test everything" or performing a full audit:
+
+### 1. Route & Page Discovery
+Scan for all available routes:
+- **Next.js:** Scan `app/` (folders with `page.tsx`) and `pages/`.
+- **Vite/React:** Look for `Route` components in `App.tsx` or `main.tsx`.
+- **Express:** Grep for `.get(`, `.post(`, `.use(`.
+
+**Discovery Command:**
+```bash
+grep -rE "\.get\(|\.post\(|path:|router\.|@app\." .
+```
+
+### 2. API Inventory
+List all backend endpoints and cross-reference with frontend service calls to ensure 100% coverage.
+
+### 3. Systematic Testing Loop
+1. **Map:** Create a mental or temporary list of all discovered pages/APIs.
+2. **Scan:** Use Playwright or HTTP requests to check if they respond (200 OK).
+3. **Assert:** Add tests for any uncovered business logic or critical paths.
 
 ## Playwright Setup
 
