@@ -1,0 +1,27 @@
+MAESTRO V0.0.7 - TEKNIK GUNCELLEME NOTLARI
+
+SURUM: v0.0.7
+TARIH: 2026-01-02
+KONU: Native Orkestrasyon ve Oyun Gelistirme Modulu
+
+1. KALDIRILAN DOSYALAR VE NEDENLERI
+-----------------------------------
+Kaldırılan dosya: scripts/parallel_orchestrator.py
+
+NEDEN: Bu script, harici bir Python dosyası olarak calıstıgı icin Claude Code CLI'ın yerel (native) yeteneklerini bypass ediyordu. Bu durum uzun sureli oturumlarda baglam (context) kopmalarına ve stabilite sorunlarına neden oluyordu. Yerel araclarla tam uyum saglamak adına sistemden cıkarıldı.
+
+
+2. YENI EKLENEN DOSYALAR VE SISTEMLER
+-------------------------------------
+- commands/orchestrate.md: Coklu ajan sureclerini yerel subagents altyapısı ile baslatan yeni komut sistemi.
+- agents/game-developer.md: Oyun tasarımı ve gelistirme surecleri icin ozellesmis yeni uzman ajan.
+- skills/game-development/: 2D/3D, multiplayer, fizik motorları ve oyun tasarım desenlerini iceren kapsamlı teknik kutuphane.
+- skills/parallel-agents/SKILL.md: Alt ajanların yerel sistem uzerindeki koordinasyonunu saglayan yeni yetenek seti.
+
+
+3. MIMARI DEGISIKLIKLERIN OZETI
+-------------------------------
+Maestro v0.0.7 ile coklu ajan (multi-agent) mimarisi harici scriptlerden arındırılarak tamamen yerel sistem uzerine kurulmustur. Bu sayede:
+- Ajanlar arası veri paylasımı daha dogal hale geldi.
+- Oturum surekliligi (context flow) korunmus oldu.
+- Sistem karmasıklıgı azaltılarak daha stabil bir calısma ortamı saglandı.
