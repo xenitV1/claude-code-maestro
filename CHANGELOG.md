@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Setup Script**: `scripts/setup.py` updated to reflect the new architecture
 
 ### Removed
-- **`scripts/parallel_orchestrator.py`** 🗑️: Removed in favor of native orchestration which provides better session stability and context flow.
+- **`scripts/parallel_orchestrator.py`** 🗑️: Claude Code CLI'daki yerel özellikleri bypass ettiği için kaldırıldı. Yerine, oturum sürekliliği ve daha iyi bağlam akışı sağlayan yerel `orchestrate.md` ajanı ve `commands/orchestrate.md` getirildi.
 
 ---
 
