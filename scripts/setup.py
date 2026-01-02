@@ -81,7 +81,6 @@ def get_all_scripts() -> List[str]:
         "explorer_helper.py",
         "dependency_scanner.py",
         "auto_preview.py",
-        "parallel_orchestrator.py",
         "session_manager.py",
     ]
 

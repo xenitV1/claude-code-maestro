@@ -1,165 +1,174 @@
 ---
 name: parallel-agents
-description: Concurrent subagent workflows for parallel task execution. Use when multiple independent tasks can run simultaneously.
+description: Native multi-agent orchestration using Claude Code's Agent Tool. Use when multiple independent tasks can run with different domain expertise or when comprehensive analysis requires multiple perspectives.
 ---
 
-# Parallel Agents
+# Native Parallel Agents
 
-> Source: obra/superpowers
+> Orchestration through Claude Code's built-in Agent Tool
 
 ## Overview
-This skill enables executing multiple independent tasks in parallel using subagents.
 
-## When to Use Parallel Agents
+This skill enables coordinating multiple specialized agents through Claude Code's native agent system. Unlike external scripts, this approach keeps all orchestration within Claude's control.
+
+## When to Use Orchestration
 
 ✅ **Good for:**
-- Independent tasks (no dependencies)
-- Code analysis from multiple perspectives
-- Generating multiple alternatives
-- Parallel file processing
+- Complex tasks requiring multiple expertise domains
+- Code analysis from security, performance, and quality perspectives
+- Comprehensive reviews (architecture + security + testing)
+- Feature implementation needing backend + frontend + database work
 
 ❌ **Not for:**
-- Sequential dependencies
-- Tasks that share state
-- When one task's output is another's input
+- Simple, single-domain tasks
+- Quick fixes or small changes
+- Tasks where one agent suffices
 
-## 2-Stage Pattern
+---
 
-### Stage 1: Parallel Execution
-Spawn multiple agents working independently.
+## Native Agent Invocation
 
-```markdown
-## Parallel Tasks
-| Agent | Task | Status |
-|-------|------|--------|
-| Agent 1 | Core Architecture Review | ⏳ |
-| Agent 2 | Frontend (React/UI) | ⏳ |
-| Agent 3 | Backend (API/Logic) | ⏳ |
-| Agent 4 | Database & Schema | ⏳ |
-| Agent 5 | Security & Auth | ⏳ |
-| Agent 6 | DevOps & Deployment | ⏳ |
-| Agent 7 | Performance Audit | ⏳ |
-| Agent 8 | Test Coverage | ⏳ |
-| Agent 9 | Documentation Audit | ⏳ |
-| Agent 10 | Mobile UX/Patterns | ⏳ |
-| Agent 11 | Debugging & Root Cause | ⏳ |
-| Agent 12 | Project Planning | ⏳ |
-| Agent 13 | Orchestration Check | ⏳ |
-| Agent 14 | Research & Discovery | ⏳ |
+### Single Agent
+```
+Use the security-auditor agent to review authentication
 ```
 
-### Stage 2: Synthesis
-Combine results into coherent output.
-
-```markdown
-## Combined Results
-- Finding from Agent 1
-- Finding from Agent 2
-- Finding from Agent 3
-
-## Final Recommendation
-[Synthesized conclusion]
+### Sequential Chain
+```
+First, use the explorer-agent to discover project structure.
+Then, use the backend-specialist to review API endpoints.
+Finally, use the test-engineer to identify test gaps.
 ```
 
-## Task Distribution
-
-```markdown
-## Project Analysis (Parallel)
-
-### Agent 1: Architecture Review
-Focus: System design, scalability
-Files: Entire codebase
-
-### Agent 2: Frontend Review
-Focus: React components, UI/UX
-Files: src/components/**
-
-### Agent 3: Backend Review
-Focus: API endpoints, business logic
-Files: src/api/**, src/services/**
-
-### Agent 4: Database Architect
-Focus: Schema design, Prisma, migrations
-Files: prisma/**, src/db/**
-
-### Agent 5: Security Auditor
-Focus: Auth, input validation, vulnerabilities
-Files: All security-sensitive code
-
-### Agent 6: DevOps Review
-Focus: CI/CD, deployment config, PM2
-Files: .github/**, ecosystem.config.js
-
-### Agent 7: Performance Review
-Focus: Bundle size, query optimization
-Files: src/**
-
-### Agent 8: Test Engineer
-Focus: Test coverage, edge cases
-Files: tests/**, **/*.test.ts
-
-### Agent 9: Doc Writer
-Focus: READMEs, API docs, code comments
-Files: **/*.md, src/**
-
-### Agent 10: Mobile Review
-Focus: React Native patterns, Expo
-Files: apps/mobile/**
-
-### Agent 11: Debugger
-Focus: Root cause analysis of known issues
-Files: Source code, logs
-
-### Agent 12: Project Planner
-Focus: Task breakdown, milestones
-Files: CLAUDE.md, plan.md
-
-### Agent 13: Orchestrator
-Focus: Multi-agent coordination and synergy
-Files: System-wide
-
-### Agent 14: Explorer Agent
-Focus: Dependency graph, tech stack research, codebase mapping
-Files: Entire codebase
+### With Context Passing
+```
+Use the frontend-specialist to analyze React components.
+Based on those findings, have the test-engineer generate component tests.
 ```
 
-## Result Aggregation
-
-```markdown
-## Aggregated Findings
-
-### High Priority (All agents agree)
-1. [Finding]
-2. [Finding]
-
-### Medium Priority (Some agents found)
-1. [Finding]
-
-### Low Priority (Single agent)
-1. [Finding]
+### Resume Previous Work
+```
+Resume agent [agentId] and continue with additional requirements.
 ```
 
-## Multi-Agent Orchestration (2025)
+---
 
-### Swarm Architecture
-A decentralized model where agents "hand off" tasks dynamically:
-- **Agent A (Researcher)** → Finds documentation.
-- **Agent B (Architect)** → Designs the plan based on A's findings.
-- **Agent C (Executor)** → Implements the plan.
+## Orchestration Patterns
 
-### Agentic Consensus (Synthesis)
-When parallel agents disagree, use a "Critic" agent:
-1. Agents 1-3 provide independent solutions.
-2. Agent 4 (Critic) evaluates all three for:
-   - Security compliance.
-   - Performance impact.
-   - Code style consistency.
-3. Final output is the consensus or the best-evaluated path.
+### Pattern 1: Comprehensive Analysis
+```
+Agents: explorer-agent → [domain-agents] → synthesis
+
+1. explorer-agent: Map codebase structure
+2. security-auditor: Security posture
+3. backend-specialist: API quality
+4. frontend-specialist: UI/UX patterns
+5. test-engineer: Test coverage
+6. Synthesize all findings
+```
+
+### Pattern 2: Feature Review
+```
+Agents: affected-domain-agents → test-engineer
+
+1. Identify affected domains (backend? frontend? both?)
+2. Invoke relevant domain agents
+3. test-engineer verifies changes
+4. Synthesize recommendations
+```
+
+### Pattern 3: Security Audit
+```
+Agents: security-auditor → penetration-tester → synthesis
+
+1. security-auditor: Configuration and code review
+2. penetration-tester: Active vulnerability testing
+3. Synthesize with prioritized remediation
+```
+
+---
+
+## Available Agents
+
+| Agent | Expertise | Trigger Phrases |
+|-------|-----------|-----------------|
+| `orchestrator` | Coordination | "comprehensive", "multi-perspective" |
+| `security-auditor` | Security | "security", "auth", "vulnerabilities" |
+| `penetration-tester` | Security Testing | "pentest", "red team", "exploit" |
+| `backend-specialist` | Backend | "API", "server", "Node.js", "Express" |
+| `frontend-specialist` | Frontend | "React", "UI", "components", "Next.js" |
+| `test-engineer` | Testing | "tests", "coverage", "TDD" |
+| `devops-engineer` | DevOps | "deploy", "CI/CD", "infrastructure" |
+| `database-architect` | Database | "schema", "Prisma", "migrations" |
+| `mobile-developer` | Mobile | "React Native", "Flutter", "mobile" |
+| `api-designer` | API Design | "REST", "GraphQL", "OpenAPI" |
+| `debugger` | Debugging | "bug", "error", "not working" |
+| `explorer-agent` | Discovery | "explore", "map", "structure" |
+| `documentation-writer` | Documentation | "docs", "README", "API docs" |
+| `performance-optimizer` | Performance | "slow", "optimize", "profiling" |
+| `project-planner` | Planning | "plan", "roadmap", "milestones" |
+| `seo-specialist` | SEO | "SEO", "meta tags", "search ranking" |
+| `game-developer` | Game Development | "game", "Unity", "Godot", "Phaser" |
+
+---
+
+## Claude Code Built-in Agents
+
+These work alongside custom agents:
+
+| Agent | Model | Purpose |
+|-------|-------|---------|
+| **Explore** | Haiku | Fast read-only codebase search |
+| **Plan** | Sonnet | Research during plan mode |
+| **General-purpose** | Sonnet | Complex multi-step modifications |
+
+Use **Explore** for quick searches, **custom agents** for domain expertise.
+
+---
+
+## Synthesis Protocol
+
+After all agents complete, synthesize:
+
+```markdown
+## Orchestration Synthesis
+
+### Task Summary
+[What was accomplished]
+
+### Agent Contributions
+| Agent | Finding |
+|-------|---------|
+| security-auditor | Found X |
+| backend-specialist | Identified Y |
+
+### Consolidated Recommendations
+1. **Critical**: [Issue from Agent A]
+2. **Important**: [Issue from Agent B]
+3. **Nice-to-have**: [Enhancement from Agent C]
+
+### Action Items
+- [ ] Fix critical security issue
+- [ ] Refactor API endpoint
+- [ ] Add missing tests
+```
+
+---
 
 ## Best Practices
 
-1. **Clear scope** - Define exactly what each agent does
-2. **Independent tasks** - No dependencies between agents
-3. **Consistent format** - All agents report in same format
-4. **Synthesis step** - Always combine/review results
-5. **Time boxing** - Set max time per agent
+1. **Available agents** - 17 specialized agents can be orchestrated
+2. **Logical order** - Discovery → Analysis → Implementation → Testing
+3. **Share context** - Pass relevant findings to subsequent agents
+4. **Single synthesis** - One unified report, not separate outputs
+5. **Verify changes** - Always include test-engineer for code modifications
+
+---
+
+## Key Benefits
+
+- ✅ **Single session** - All agents share context
+- ✅ **AI-controlled** - Claude orchestrates autonomously
+- ✅ **Native integration** - Works with built-in Explore, Plan agents
+- ✅ **Resume support** - Can continue previous agent work
+- ✅ **Context passing** - Findings flow between agents
