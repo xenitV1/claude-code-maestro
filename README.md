@@ -3,18 +3,18 @@
 > **AI Development Orchestrator** - Transform Claude into a powerful development team with specialized agents, intelligent skills, and automated workflows.
 
 [![Agents](https://img.shields.io/badge/Agents-18-blue)](#-agents)
-[![Skills](https://img.shields.io/badge/Skills-49-green)](#-skills)
+[![Skills](https://img.shields.io/badge/Skills-50-green)](#-skills)
 [![Commands](https://img.shields.io/badge/Commands-10-orange)](#-commands)
-[![Python](https://img.shields.io/badge/Scripts-6-yellow)](#-scripts)
+[![Python](https://img.shields.io/badge/Scripts-7-yellow)](#-scripts)
 
 ---
 
 ## ✨ Features
 
-- 🤖 **18 Specialized Agents** - Expert AI personas for frontend, backend, mobile, DevOps, security, SEO, games and more
-- 📚 **49 Skills** - Domain knowledge resources with patterns, best practices, and templates
+- 🤖 **18 Specialized Agents** - Expert AI personas for frontend, backend, test engineering, security, and more
+- 📚 **50 Skills** - Domain knowledge resources with patterns, best practices, and templates
 - ⚡ **10 Slash Commands** - Quick actions for creating, orchestrating, debugging, testing, and deploying
-- 🐍 **6 Python Scripts** - Automation hooks for session management and project discovery
+- 🐍 **7 Python Scripts** - Automation hooks and AI-controlled quality & Deep Audit tools
 - 🎯 **Clean Code Standards** - CRITICAL skill for concise, direct, solution-focused code
 - 🎭 **6 Behavioral Modes** - Adaptive AI behavior: Brainstorm, Implement, Debug, Review, Teach, Ship
 - 🔄 **Project Detection** - Automatically detects project type and tech stack
@@ -156,9 +156,10 @@ maestro/
 │   ├── enhance.md
 │   ├── debug.md
 │   └── ...
-├── scripts/             # 6 Python automation scripts
+├── scripts/             # 7 Python automation scripts
 │   ├── session_hooks.py
 │   ├── explorer_helper.py
+│   ├── lint_check.py        # 🆕 AI-controlled quality audit
 │   ├── dependency_scanner.py
 │   ├── session_manager.py
 │   └── auto_preview.py
@@ -257,6 +258,7 @@ Knowledge resources that agents reference for domain expertise:
 - `deployment-procedures` - Safe deployment
 - `performance-profiling` - Performance analysis
 - `systematic-debugging` - Debugging methodology
+- `lint-and-validate` - 🆕 AI-controlled quality audit (ESLint, TSC, Ruff, Bandit)
 - `mobile-ux-patterns` - Touch gestures, haptics, accessibility
 
 ---
@@ -290,6 +292,7 @@ Python automation scripts that provide intelligent hooks:
 ### Utility Scripts (Manual)
 | Script | Purpose |
 |--------|---------|
+| `lint_check.py` | 🆕 AI-controlled quality audit (Ruff, ESLint, Security) |
 | `session_manager.py` | Project state management |
 | `auto_preview.py` | Preview server control |
 | `dependency_scanner.py` | Dependency analysis |
@@ -407,9 +410,9 @@ Hooks are configured in `settings.json`:
 | Category | Count |
 |----------|-------|
 | Agents | 18 |
-| Skills | 49 |
+| Skills | 50 |
 | Commands | 10 |
-| Scripts | 6 |
+| Scripts | 7 |
 | Templates | 12 |
 | Behavioral Modes | 6 |
 | Hook Scripts | 2 (session_hooks, explorer_helper) |

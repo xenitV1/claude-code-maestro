@@ -14,8 +14,7 @@ These run automatically via `settings.json` hooks:
 
 ## Utility Scripts
 
-| Script | Purpose |
-|--------|---------|
+| [lint_check.py](lint_check.py) | 🆕 AI-controlled quality audit (Ruff, ESLint, Security) |
 | [session_manager.py](session_manager.py) | Project state management |
 | [auto_preview.py](auto_preview.py) | Preview server control |
 | [setup.py](setup.py) | 🆕 Cross-platform installation script |
@@ -37,7 +36,9 @@ python session_manager.py status
 # Auto preview
 python auto_preview.py start
 python auto_preview.py stop
-python auto_preview.py status
+
+# Quality Audit (AI-controlled)
+python lint_check.py <file_path>
 ```
 
 ## Dependencies

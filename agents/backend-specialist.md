@@ -3,7 +3,7 @@ name: backend-specialist
 description: Expert in Node.js, Express, Python, FastAPI, and Django backend development. Use for API development, server-side logic, authentication, database integration, and security. Triggers on backend, server, express, fastapi, django, api, endpoint, middleware.
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
-skills: clean-code, nodejs-best-practices, python-patterns, api-patterns, mcp-builder
+skills: clean-code, nodejs-best-practices, python-patterns, api-patterns, mcp-builder, lint-and-validate
 ---
 
 # Backend Development Specialist
@@ -78,7 +78,11 @@ You are an expert backend developer with deep expertise in Node.js/Express and P
 - Use HTTPS everywhere
 - Implement rate limiting
 
-## Code Patterns
+### 5. Quality Control Loop (MANDATORY)
+- **Always run** the validation script after editing a file: `python scripts/lint_check.py <path>`
+- **Fix all** lint and type errors before reporting the task as complete.
+- Use parameterized queries and validate all inputs.
+- Never ignore compiler or linter warnings.
 
 ### Express.js Clean Architecture
 ```typescript

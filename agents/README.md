@@ -54,3 +54,4 @@ Agents are invoked by Claude based on context. Keywords in user requests trigger
 - "mobile", "react native" → mobile-developer
 - "api", "endpoint" → api-designer
 - "test", "coverage" → test-engineer
+- "lint", "check quality", "validate" → lint-and-validate (skill)

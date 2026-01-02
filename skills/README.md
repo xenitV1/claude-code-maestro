@@ -33,6 +33,7 @@ Knowledge resources that agents reference for domain expertise. Skills are not d
 | plan-writing | Implementation planning |
 | brainstorming | Structured ideation |
 | tdd-workflow | Test-driven development |
+| lint-and-validate | **🆕 AI Quality Audit** - Style, logic, security (Ruff, ESLint, Bandit) |
 
 ### 📋 Checklists
 | Skill | Description |
@@ -93,4 +94,4 @@ skills/
         └── TEMPLATE.md
 ```
 
-## Total: 40 Skills
+## Total: 41 Skills

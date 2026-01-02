@@ -105,7 +105,7 @@ Context injection requires hook stdout output. `CODEBASE.md` is created in proje
 
 ---
 
-## 📚 Skills (49)
+## 📚 Skills (50)
 
 ### Core Skills
 
@@ -113,6 +113,7 @@ Context injection requires hook stdout output. `CODEBASE.md` is created in proje
 |-------|---------|
 | `app-builder` | Main orchestrator - project building |
 | `clean-code` | **CRITICAL** - Concise, direct coding - no over-engineering |
+| `lint-and-validate` | **🆕 AI Quality Audit** - Style, logic, security (Ruff, ESLint) |
 | `conversation-manager` | User communication protocol |
 | `behavioral-modes` | AI modes: brainstorm, implement, debug, ship |
 | `geo-fundamentals` | **GEO** - AI search optimization (ChatGPT, Claude, Perplexity) |
@@ -161,6 +162,7 @@ skills/
 | Script | Hook | Purpose |
 |--------|------|---------|
 | `session_hooks.py` | SessionStart/End | Project detection, session tracking, dependency analysis |
+| `lint_check.py` | - | 🆕 AI Quality Audit (Ruff, Bandit, ESLint, TSC) |
 | `dependency_scanner.py` | SessionStart | 🆕 File dependency analysis (imports, API calls, DB models) |
 | `explorer_helper.py` | SessionStart | Deep project discovery |
 | `session_manager.py` | - | Project state management |
