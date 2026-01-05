@@ -34,7 +34,7 @@ export function SubmitButton({ action }: { action: (formData: FormData) => Promi
       <button
         disabled={isPending}
         className={cn(
-          'px-4 py-2 rounded bg-blue-600 text-white disabled:opacity-50 transition-all',
+          'px-6 py-3 rounded-none border-2 border-black bg-black text-white hover:bg-white hover:text-black transition-all active:scale-95',
           isPending && 'animate-pulse cursor-wait'
         )}
       >
@@ -57,7 +57,7 @@ interface CardProps {
 
 export function Card({ title, description, children }: CardProps) {
   return (
-    <div className="rounded-lg border bg-white p-6 shadow-sm">
+    <div className="rounded-none border-2 border-black bg-white p-6 hover:shadow-[4px_4px_0_0_#000] transition-shadow">
       <h3 className="text-lg font-semibold">{title}</h3>
       {description && (
         <p className="mt-1 text-sm text-gray-500">{description}</p>

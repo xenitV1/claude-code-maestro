@@ -1,99 +1,143 @@
 ---
 name: tailwind-patterns
-description: Tailwind CSS patterns including responsive design, custom components, and dark mode.
+description: Tailwind CSS principles. Responsive design, dark mode, utility patterns.
 ---
 
 # Tailwind Patterns
 
-## Responsive Design
+> Utility-first CSS principles.
 
-```html
-<!-- Mobile-first approach -->
-<div class="w-full md:w-1/2 lg:w-1/3">
-  <!-- Full width on mobile, half on md, third on lg -->
-</div>
+---
 
-<!-- Hide/show based on breakpoint -->
-<div class="hidden md:block">Desktop only</div>
-<div class="block md:hidden">Mobile only</div>
-```
+## 1. Core Philosophy
 
-## Component Patterns
+| Principle | Meaning |
+|-----------|---------|
+| Utility-first | Use utilities, not custom CSS |
+| Composition | Combine utilities for components |
+| Responsive | Mobile-first breakpoints |
+| Consistency | Design system via config |
 
-```tsx
-// Button variants
-const buttonVariants = {
-  primary: "bg-blue-600 hover:bg-blue-700 text-white",
-  secondary: "bg-gray-200 hover:bg-gray-300 text-gray-800",
-  danger: "bg-red-600 hover:bg-red-700 text-white"
-};
+---
 
-function Button({ variant = "primary", children, ...props }) {
-  return (
-    <button 
-      className={`px-4 py-2 rounded-lg font-medium transition-colors ${buttonVariants[variant]}`}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-}
-```
+## 2. Responsive Design
 
-## Dark Mode
+### Breakpoint System
 
-```html
-<!-- With dark: prefix -->
-<div class="bg-white dark:bg-gray-900">
-  <p class="text-gray-900 dark:text-white">Content</p>
-</div>
-```
+| Prefix | Min Width | Target |
+|--------|-----------|--------|
+| (none) | 0px | Mobile |
+| `sm:` | 640px | Small tablet |
+| `md:` | 768px | Tablet |
+| `lg:` | 1024px | Laptop |
+| `xl:` | 1280px | Desktop |
+| `2xl:` | 1536px | Large desktop |
 
-```javascript
-// tailwind.config.js
-module.exports = {
-  darkMode: 'class', // or 'media'
-  // ...
-}
-```
+### Mobile-First Pattern
 
-## Common Patterns
+- Start with mobile styles
+- Add breakpoints for larger screens
+- Example: `w-full md:w-1/2 lg:w-1/3`
 
-```html
-<!-- Card -->
-<div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-  <h3 class="text-lg font-semibold mb-2">Title</h3>
-  <p class="text-gray-600">Content</p>
-</div>
+---
 
-<!-- Flex center -->
-<div class="flex items-center justify-center h-screen">
-  Centered content
-</div>
+## 3. Dark Mode
 
-<!-- Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  <div>Item 1</div>
-  <div>Item 2</div>
-  <div>Item 3</div>
-</div>
-```
+### Approaches
 
-## Tailwind CSS v4 (Oxide)
-V4 is CSS-first. Design tokens are defined using `@theme`:
+| Method | Use |
+|--------|-----|
+| `class` | Manual toggle |
+| `media` | System preference |
 
-```css
-@import "tailwindcss";
+### Pattern
 
-@theme {
-  --color-brand: #3b82f6;
-  --font-display: "Satoshi", sans-serif;
-  --breakpoint-3xl: 1920px;
-}
-```
+- Add `dark:` prefix for dark variants
+- Example: `bg-white dark:bg-gray-900`
 
-### Breaking Changes 2025
-- No more `tailwind.config.js` by default.
-- Modern CSS variables are generated for all tokens.
-- Native CSS nesting supported (no plugin needed).
-- `border` defaults to `currentColor` (previously `gray-200`).
+---
+
+## 4. Common Patterns
+
+### Layout
+
+| Pattern | Classes |
+|---------|---------|
+| Center | `flex items-center justify-center` |
+| Stack | `flex flex-col gap-4` |
+| Row | `flex flex-row gap-4` |
+| Grid | `grid grid-cols-1 md:grid-cols-3 gap-4` (Not: Asimetrik/Bento tercih edin!) |
+
+### Spacing
+
+| Pattern | Approach |
+|---------|----------|
+| Padding | `p-{size}` or `px-`, `py-` |
+| Margin | `m-{size}` or `mx-`, `my-` |
+| Gap | `gap-{size}` |
+
+---
+
+## 5. Component Patterns
+
+### Button Principles
+
+| State | Apply |
+|-------|-------|
+| Base | Padding, rounded, font |
+| Hover | Background change |
+| Focus | Ring for accessibility |
+| Disabled | Opacity, cursor |
+
+### Card Principles
+
+| Element | Apply |
+|---------|-------|
+| Container | Background, rounded, shadow |
+| Hover | Shadow increase, subtle scale |
+| Padding | Consistent internal spacing |
+
+---
+
+## 6. Tailwind v4 Changes (2025)
+
+### Key Differences
+
+| v3 | v4 |
+|----|----|
+| tailwind.config.js | CSS-based `@theme` |
+| Plugin system | Native CSS features |
+| postcss | Oxide engine (faster) |
+
+### New Features
+
+- CSS-first configuration
+- Native nesting support
+- Modern CSS variables
+- Faster build times
+
+---
+
+## 7. Best Practices
+
+| Practice | Why |
+|----------|-----|
+| Consistent spacing scale | Visual rhythm |
+| Extract components | Reusability |
+| Use design tokens | Maintainability |
+| Mobile-first | Better CSS cascade |
+
+---
+
+## 8. Anti-Patterns
+
+| ❌ Don't | ✅ Do |
+|----------|-------|
+| Arbitrary values everywhere | Use design system |
+| Inline styles | Use utilities |
+| !important | Fix specificity |
+| Duplicate class groups | Extract component |
+
+---
+
+> **Remember:** Tailwind is a design system in code. Respect the constraints.
