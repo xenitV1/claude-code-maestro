@@ -1,261 +1,360 @@
 ---
 name: database-design
-description: Database design patterns including normalization, indexing, query optimization, and PostgreSQL best practices. Use when designing schemas, optimizing queries, or planning migrations.
+description: Database design principles and decision-making. Schema design, indexing strategy, ORM selection, serverless databases. Teaches thinking, not fixed SQL.
 ---
 
 # Database Design
 
-## Overview
-This skill covers database design principles, PostgreSQL best practices, and query optimization techniques.
+> Database design principles and decision-making for 2025.
+> **Learn to THINK, not copy SQL patterns.**
 
-## Normalization
+---
 
-### First Normal Form (1NF)
-- Atomic values (no arrays or nested objects in columns)
-- No repeating groups
+## ⚠️ How to Use This Skill
 
-```sql
--- ❌ BAD: Repeating groups
-CREATE TABLE orders (
-    id INT PRIMARY KEY,
-    item1 VARCHAR(100),
-    item2 VARCHAR(100),
-    item3 VARCHAR(100)
-);
+This skill teaches **decision-making principles**, not fixed SQL to copy.
 
--- ✅ GOOD: Separate table
-CREATE TABLE orders (id INT PRIMARY KEY);
-CREATE TABLE order_items (
-    id INT PRIMARY KEY,
-    order_id INT REFERENCES orders(id),
-    item VARCHAR(100)
-);
+- ASK user for database preferences when unclear
+- Choose database/ORM based on CONTEXT
+- Don't default to PostgreSQL for everything
+
+---
+
+## 1. Database Selection (2025)
+
+### Decision Tree
+
+```
+What are your requirements?
+│
+├── Full relational features needed
+│   ├── Self-hosted → PostgreSQL
+│   └── Serverless → Neon, Supabase
+│
+├── Edge deployment / Ultra-low latency
+│   └── Turso (edge SQLite)
+│
+├── AI / Vector search
+│   └── PostgreSQL + pgvector
+│
+├── Simple / Embedded / Local
+│   └── SQLite
+│
+└── Global distribution
+    └── PlanetScale, CockroachDB, Turso
 ```
 
-### Second Normal Form (2NF)
-- 1NF + No partial dependencies
-- All non-key columns depend on entire primary key
+### Comparison Principles
 
-### Third Normal Form (3NF)
-- 2NF + No transitive dependencies
-- Non-key columns depend only on primary key
+| Database | Best For | Trade-offs |
+|----------|----------|------------|
+| **PostgreSQL** | Full features, complex queries | Needs hosting |
+| **Neon** | Serverless PG, branching | PostgreSQL complexity |
+| **Turso** | Edge, low latency | SQLite limitations |
+| **SQLite** | Simple, embedded, local | Single-writer |
+| **PlanetScale** | MySQL, global scale | No foreign keys |
 
-## Schema Design
+### Selection Questions to Ask:
+1. What's the deployment environment?
+2. How complex are the queries?
+3. Is edge/serverless important?
+4. Vector search needed?
+5. Global distribution required?
 
-### Well-Designed Schema
-```sql
--- Users table
-CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    status VARCHAR(20) DEFAULT 'active' 
-        CHECK (status IN ('active', 'inactive', 'suspended')),
-    created_at TIMESTAMPTZ DEFAULT NOW(),
-    updated_at TIMESTAMPTZ DEFAULT NOW()
-);
+---
 
--- Index for email lookups
-CREATE INDEX idx_users_email ON users(email);
+## 2. ORM Selection (2025)
 
--- Posts table
-CREATE TABLE posts (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    title VARCHAR(255) NOT NULL,
-    slug VARCHAR(255) NOT NULL UNIQUE,
-    content TEXT,
-    published BOOLEAN DEFAULT FALSE,
-    published_at TIMESTAMPTZ,
-    view_count INTEGER DEFAULT 0,
-    created_at TIMESTAMPTZ DEFAULT NOW(),
-    updated_at TIMESTAMPTZ DEFAULT NOW()
-);
+### Decision Tree
 
--- Composite index for user's published posts
-CREATE INDEX idx_posts_user_published ON posts(user_id, published, created_at DESC);
-
--- Tags table
-CREATE TABLE tags (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR(50) NOT NULL UNIQUE,
-    slug VARCHAR(50) NOT NULL UNIQUE
-);
-
--- Many-to-many junction table
-CREATE TABLE post_tags (
-    post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
-    tag_id UUID REFERENCES tags(id) ON DELETE CASCADE,
-    PRIMARY KEY (post_id, tag_id)
-);
+```
+What's the context?
+│
+├── Edge deployment / Bundle size matters
+│   └── Drizzle (smallest, SQL-like)
+│
+├── Best DX / Schema-first
+│   └── Prisma (migrations, studio)
+│
+├── Maximum control
+│   └── Raw SQL with query builder
+│
+└── Python ecosystem
+    └── SQLAlchemy 2.0 (async support)
 ```
 
-## Indexing Strategy
+### Comparison Principles
 
-### When to Index
-- Columns used in WHERE clauses
-- Columns used in JOIN conditions
-- Columns used in ORDER BY
-- Foreign key columns
+| ORM | Best For | Trade-offs |
+|-----|----------|------------|
+| **Drizzle** | Edge, TypeScript | Newer, less examples |
+| **Prisma** | DX, schema management | Heavier, not edge-ready |
+| **Kysely** | Type-safe SQL builder | Manual migrations |
+| **Raw SQL** | Complex queries, control | Manual type safety |
 
-### Index Types
-```sql
--- B-tree (default, most common)
-CREATE INDEX idx_users_email ON users(email);
+---
 
--- Composite index (multi-column)
-CREATE INDEX idx_posts_user_date ON posts(user_id, created_at DESC);
+## 3. Schema Design Principles
 
--- Partial index (conditional)
-CREATE INDEX idx_active_users ON users(email) WHERE status = 'active';
+### Normalization Decision
 
--- GIN index (for JSONB, arrays, full-text)
-CREATE INDEX idx_posts_metadata ON posts USING GIN(metadata);
+```
+When to normalize (separate tables):
+├── Data is repeated across rows
+├── Updates would need multiple changes
+├── Relationships are clear
+└── Query patterns benefit
 
--- Unique index
-CREATE UNIQUE INDEX idx_users_email_unique ON users(email);
+When to denormalize (embed/duplicate):
+├── Read performance critical
+├── Data rarely changes
+├── Always fetched together
+└── Simpler queries needed
 ```
 
-## Query Optimization
+### Primary Key Selection
 
-### EXPLAIN ANALYZE
-```sql
-EXPLAIN ANALYZE 
-SELECT * FROM posts 
-WHERE user_id = '123' AND published = true 
-ORDER BY created_at DESC 
-LIMIT 10;
+| Type | Use When |
+|------|----------|
+| **UUID** | Distributed systems, security (no guessing) |
+| **ULID** | UUID + sortable by time |
+| **Auto-increment** | Simple apps, single database |
+| **Natural key** | Rarely (business meaning, careful!) |
+
+### Timestamp Strategy
+
+```
+For every table, consider:
+├── created_at → When record was created
+├── updated_at → Last modification time
+└── deleted_at → Soft delete (if needed)
+
+Use TIMESTAMPTZ (with timezone) not TIMESTAMP
 ```
 
-### Common Optimizations
-```sql
--- ❌ BAD: SELECT * (fetches all columns)
-SELECT * FROM users WHERE id = '123';
+---
 
--- ✅ GOOD: Select only needed columns
-SELECT id, name, email FROM users WHERE id = '123';
+## 4. Indexing Principles
 
--- ❌ BAD: LIKE with leading wildcard (no index)
-SELECT * FROM users WHERE email LIKE '%@gmail.com';
+### When to Create Indexes
 
--- ✅ GOOD: Use reverse index or full-text search
-SELECT * FROM users WHERE email LIKE 'user%';
-
--- ❌ BAD: OR conditions (may skip index)
-SELECT * FROM posts WHERE user_id = '1' OR user_id = '2';
-
--- ✅ GOOD: Use IN
-SELECT * FROM posts WHERE user_id IN ('1', '2');
 ```
+Index these:
+├── Columns in WHERE clauses
+├── Columns in JOIN conditions
+├── Columns in ORDER BY
+├── Foreign key columns
+└── Unique constraints
+
+Don't over-index:
+├── Write-heavy tables (slower inserts)
+├── Low-cardinality columns
+├── Columns rarely queried
+```
+
+### Index Type Selection
+
+| Type | Use For |
+|------|---------|
+| **B-tree** | General purpose, equality & range |
+| **Hash** | Equality only, faster |
+| **GIN** | JSONB, arrays, full-text |
+| **GiST** | Geometric, range types |
+| **HNSW/IVFFlat** | Vector similarity (pgvector) |
+
+### Composite Index Principles
+
+```
+Order matters for composite indexes:
+├── Equality columns first
+├── Range columns last
+├── Most selective first
+└── Match query pattern
+```
+
+---
+
+## 5. Query Optimization Principles
 
 ### N+1 Problem
-```sql
--- ❌ BAD: N+1 queries
--- 1: SELECT * FROM posts
--- N: SELECT * FROM users WHERE id = ?
 
--- ✅ GOOD: Single JOIN
-SELECT p.*, u.name as author_name
-FROM posts p
-JOIN users u ON p.user_id = u.id;
+```
+What is N+1?
+├── 1 query to get parent records
+├── N queries to get related records (for each parent)
+└── Very slow!
+
+Solutions:
+├── JOIN → Single query with all data
+├── Eager loading → ORM handles JOIN
+├── DataLoader → Batch and cache (GraphQL)
+└── Subquery → Fetch related in one query
 ```
 
-## Migrations
+### Query Analysis Mindset
 
-### Safe Migration Pattern
-```sql
--- Step 1: Add column as nullable (non-blocking)
-ALTER TABLE users ADD COLUMN phone VARCHAR(20);
-
--- Step 2: Backfill in batches
-UPDATE users SET phone = '' WHERE phone IS NULL LIMIT 1000;
-
--- Step 3: Add NOT NULL after backfill
-ALTER TABLE users ALTER COLUMN phone SET NOT NULL;
-
--- Step 4: Add index concurrently (non-blocking)
-CREATE INDEX CONCURRENTLY idx_users_phone ON users(phone);
+```
+Before optimizing:
+├── EXPLAIN ANALYZE the query
+├── Look for Seq Scan (full table scan)
+├── Check actual vs estimated rows
+└── Identify missing indexes
 ```
 
-## Modern Database Patterns (2025)
+### Optimization Priorities
 
-### Drizzle ORM (Edge-Ready)
-```typescript
-// schema.ts
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+1. **Add missing indexes** (most common issue)
+2. **Select only needed columns** (not SELECT *)
+3. **Use proper JOINs** (avoid subqueries when possible)
+4. **Limit early** (pagination at database level)
+5. **Cache** (when appropriate)
 
-export const users = pgTable('users', {
-  id: serial('id').primaryKey(),
-  fullName: text('full_name'),
-  email: text('email').notNull().unique(),
-  createdAt: timestamp('created_at').defaultNow(),
-});
+---
 
-// Implementation (Neon / Turso)
-const db = drizzle(client);
-const result = await db.select().from(users).where(eq(users.id, 1));
+## 6. Migration Principles
+
+### Safe Migration Strategy
+
+```
+For zero-downtime changes:
+│
+├── Adding column
+│   └── Add as nullable → backfill → add NOT NULL
+│
+├── Removing column
+│   └── Stop using → deploy → remove column
+│
+├── Adding index
+│   └── CREATE INDEX CONCURRENTLY (non-blocking)
+│
+└── Renaming column
+    └── Add new → migrate data → deploy → drop old
 ```
 
-### Vector Indexing (AI Support)
-```sql
--- Enable pgvector
-CREATE EXTENSION IF NOT EXISTS vector;
+### Migration Philosophy
 
--- Add vector column (1536 dimensions for OpenAI)
-ALTER TABLE documents ADD COLUMN embedding vector(1536);
+- Never make breaking changes in one step
+- Test migrations on data copy first
+- Have rollback plan
+- Run in transaction when possible
 
--- HNSW Index for fast similarity search
-CREATE INDEX ON documents USING hnsw (embedding vector_cosine_ops)
-WITH (m = 16, ef_construction = 64);
+---
 
--- Querying with Cosine Similarity
-SELECT content FROM documents 
-ORDER BY embedding <=> '[0.1, 0.2, ...]' 
-LIMIT 5;
+## 7. Vector Database (AI/Embeddings)
+
+### When to Use pgvector
+
+```
+Use pgvector when:
+├── Already using PostgreSQL
+├── Moderate vector dataset (<1M vectors)
+├── Need SQL + vector in same query
+└── Don't want separate vector service
 ```
 
-### Edge Capabilities
-- **LibSQL (Turso):** Optimized for low-latency edge nodes.
-- **Neon:** Serverless Postgres with instant branching for dev environments.
+### Alternative Vector Solutions
 
-## PostgreSQL Features
+| Solution | Best For |
+|----------|----------|
+| **pgvector** | Integrated with PostgreSQL |
+| **Pinecone** | Fully managed, large scale |
+| **Qdrant** | Self-hosted, performance |
+| **Weaviate** | Semantic search, GraphQL |
 
-### JSONB
-```sql
-CREATE TABLE events (
-    id UUID PRIMARY KEY,
-    data JSONB NOT NULL
-);
+---
 
--- Query JSONB
-SELECT * FROM events WHERE data->>'type' = 'click';
-SELECT * FROM events WHERE data @> '{"type": "click"}';
+## 8. Serverless Database Principles
 
--- Index JSONB
-CREATE INDEX idx_events_data ON events USING GIN(data);
+### Neon (Serverless PostgreSQL)
+
+```
+Benefits:
+├── Scale to zero (cost savings)
+├── Instant branching (dev/preview)
+├── Full PostgreSQL compatibility
+└── Autoscaling
+
+Best for:
+├── Variable traffic
+├── Development workflows
+├── Preview environments
+└── Cost-conscious deployments
 ```
 
-### Common Table Expressions (CTE)
-```sql
-WITH active_users AS (
-    SELECT id, name FROM users WHERE status = 'active'
-),
-user_posts AS (
-    SELECT user_id, COUNT(*) as post_count
-    FROM posts
-    GROUP BY user_id
-)
-SELECT au.name, COALESCE(up.post_count, 0) as posts
-FROM active_users au
-LEFT JOIN user_posts up ON au.id = up.user_id;
+### Turso (Edge SQLite)
+
+```
+Benefits:
+├── Ultra-low latency (edge locations)
+├── SQLite compatibility
+├── Generous free tier
+└── Simple setup
+
+Best for:
+├── Edge functions
+├── Read-heavy workloads
+├── Simple data needs
+└── Global distribution
 ```
 
-## Best Practices
+---
 
-1. **Use UUIDs** for primary keys (better for distributed systems)
-2. **Always add timestamps** (created_at, updated_at)
-3. **Use constraints** (NOT NULL, CHECK, UNIQUE)
-4. **Index foreign keys** for JOIN performance
-5. **Use appropriate types** (TIMESTAMPTZ, not VARCHAR for dates)
-6. **Document schema** with comments
+## 9. Relationship Design Principles
+
+### Relationship Types
+
+| Type | When | Implementation |
+|------|------|---------------|
+| **One-to-One** | Extension data | Separate table with FK |
+| **One-to-Many** | Parent-children | FK on child table |
+| **Many-to-Many** | Both sides have many | Junction table |
+
+### Foreign Key Principles
+
+```
+ON DELETE options:
+├── CASCADE → Delete children with parent
+├── SET NULL → Children become orphans
+├── RESTRICT → Prevent delete if children exist
+└── SET DEFAULT → Children get default value
+
+Choose based on business logic, not convenience
+```
+
+---
+
+## 10. Decision Checklist
+
+Before designing schema:
+
+- [ ] **Asked user about database preference?**
+- [ ] **Chosen database for THIS context?** (not just default)
+- [ ] **Considered deployment environment?**
+- [ ] **Planned index strategy?**
+- [ ] **Defined relationship types?**
+- [ ] **Considered migration strategy?**
+- [ ] **Evaluated serverless options?**
+
+---
+
+## 11. Anti-Patterns to Avoid
+
+### ❌ DON'T:
+- Default to PostgreSQL for simple apps (SQLite may suffice)
+- Skip indexing (then wonder why queries are slow)
+- Use SELECT * in production
+- Store JSON when structured data is better
+- Create indexes on every column
+- Ignore N+1 queries
+- Hard-delete when soft-delete is better
+
+### ✅ DO:
+- Choose database based on context
+- Ask about deployment requirements
+- Plan indexes based on query patterns
+- Use EXPLAIN ANALYZE before optimizing
+- Design for evolution
+
+---
+
+> **Remember**: Database design is about making decisions for YOUR specific use case. Don't copy schemas—think about what serves your application best.

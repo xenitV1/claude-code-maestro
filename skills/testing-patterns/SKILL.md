@@ -1,245 +1,177 @@
 ---
 name: testing-patterns
-description: Testing patterns and best practices including unit tests, integration tests, mocking, and test organization. Use when writing tests or setting up testing infrastructure.
+description: Testing patterns and principles. Unit, integration, mocking strategies.
 ---
 
 # Testing Patterns
 
-## Overview
-This skill covers testing best practices, patterns, and strategies for reliable test suites.
+> Principles for reliable test suites.
 
-## Testing Pyramid
+---
+
+## 1. Testing Pyramid
 
 ```
-        /\        E2E (Few)
-       /  \       - Critical user flows
-      /----\      
-     /      \     Integration (Some)
-    /--------\    - API endpoints, DB queries
-   /          \   
-  /------------\  Unit (Many)
-                  - Individual functions
+        /\          E2E (Few)
+       /  \         Critical flows
+      /----\
+     /      \       Integration (Some)
+    /--------\      API, DB queries
+   /          \
+  /------------\    Unit (Many)
+                    Functions, classes
 ```
 
-## AAA Pattern
+---
 
-Every test follows **Arrange-Act-Assert**:
+## 2. AAA Pattern
 
-```typescript
-describe('Calculator', () => {
-  it('should add two numbers', () => {
-    // Arrange
-    const calculator = new Calculator();
-    const a = 5;
-    const b = 3;
+| Step | Purpose |
+|------|---------|
+| **Arrange** | Set up test data |
+| **Act** | Execute code under test |
+| **Assert** | Verify outcome |
 
-    // Act
-    const result = calculator.add(a, b);
+---
 
-    // Assert
-    expect(result).toBe(8);
-  });
-});
-```
+## 3. Test Type Selection
 
-## Unit Testing
+### When to Use Each
 
-### Vitest 2.0 Example
-```typescript
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+| Type | Best For | Speed |
+|------|----------|-------|
+| **Unit** | Pure functions, logic | Fast (<50ms) |
+| **Integration** | API, DB, services | Medium |
+| **E2E** | Critical user flows | Slow |
 
-describe('UserService', () => {
-  beforeEach(() => {
-    vi.clearAllMocks(); // Use 'vi' instead of 'jest'
-  });
+---
 
-  it('should find user', async () => {
-    const mockUser = { id: '1', name: 'Mehmet' };
-    vi.mock('./repository', () => ({ find: vi.fn().mockResolvedValue(mockUser) }));
-    // ...
-  });
-});
-```
+## 4. Unit Test Principles
 
-## Contract Testing (MSW 2.0)
-Mock network at the protocol level for integration tests:
-```typescript
-import { http, HttpResponse } from 'msw';
-import { setupServer } from 'msw/node';
+### Good Unit Tests
 
-const server = setupServer(
-  http.get('/api/user', () => {
-    return HttpResponse.json({ id: '1', name: 'John' });
-  })
-);
-```
+| Principle | Meaning |
+|-----------|---------|
+| Fast | < 100ms each |
+| Isolated | No external deps |
+| Repeatable | Same result always |
+| Self-checking | No manual verification |
+| Timely | Written with code |
 
-### Pytest Example
-```python
-# test_user_service.py
-import pytest
-from unittest.mock import Mock, patch
-from app.services.user_service import UserService
+### What to Unit Test
 
-class TestUserService:
-    @pytest.fixture
-    def mock_repository(self):
-        return Mock()
+| Test | Don't Test |
+|------|------------|
+| Business logic | Framework code |
+| Edge cases | Third-party libs |
+| Error handling | Simple getters |
 
-    @pytest.fixture
-    def service(self, mock_repository):
-        return UserService(repository=mock_repository)
+---
 
-    def test_find_by_id_returns_user(self, service, mock_repository):
-        # Arrange
-        mock_user = {"id": "123", "name": "John"}
-        mock_repository.find_by_id.return_value = mock_user
+## 5. Integration Test Principles
 
-        # Act
-        result = service.find_by_id("123")
+### What to Test
 
-        # Assert
-        assert result == mock_user
-        mock_repository.find_by_id.assert_called_once_with("123")
+| Area | Focus |
+|------|-------|
+| API endpoints | Request/response |
+| Database | Queries, transactions |
+| External services | Contracts |
 
-    def test_find_by_id_raises_when_not_found(self, service, mock_repository):
-        # Arrange
-        mock_repository.find_by_id.return_value = None
+### Setup/Teardown
 
-        # Act & Assert
-        with pytest.raises(NotFoundError):
-            service.find_by_id("999")
-```
+| Phase | Action |
+|-------|--------|
+| Before All | Connect resources |
+| Before Each | Reset state |
+| After Each | Clean up |
+| After All | Disconnect |
 
-## Integration Testing
+---
 
-### API Integration Test
-```typescript
-// users.integration.test.ts
-import request from 'supertest';
-import { app } from '../app';
-import { db } from '../database';
-import { createTestUser } from './factories';
+## 6. Mocking Principles
 
-describe('Users API', () => {
-  beforeAll(async () => {
-    await db.connect();
-  });
+### When to Mock
 
-  afterAll(async () => {
-    await db.disconnect();
-  });
+| Mock | Don't Mock |
+|------|------------|
+| External APIs | The code under test |
+| Database (unit) | Simple dependencies |
+| Time/random | Pure functions |
+| Network | In-memory stores |
 
-  beforeEach(async () => {
-    await db.clear('users');
-  });
+### Mock Types
 
-  describe('POST /users', () => {
-    it('should create user and return 201', async () => {
-      const userData = {
-        email: 'test@example.com',
-        name: 'Test User',
-        password: 'SecurePass123!'
-      };
+| Type | Use |
+|------|-----|
+| Stub | Return fixed values |
+| Spy | Track calls |
+| Mock | Set expectations |
+| Fake | Simplified implementation |
 
-      const response = await request(app)
-        .post('/users')
-        .send(userData)
-        .expect(201);
+---
 
-      expect(response.body.success).toBe(true);
-      expect(response.body.data.email).toBe(userData.email);
-      expect(response.body.data).not.toHaveProperty('password');
-    });
+## 7. Test Organization
 
-    it('should reject invalid email and return 400', async () => {
-      const response = await request(app)
-        .post('/users')
-        .send({ email: 'invalid', name: 'Test', password: 'pass' })
-        .expect(400);
+### Naming
 
-      expect(response.body.error.code).toBe('VALIDATION_ERROR');
-    });
-  });
+| Pattern | Example |
+|---------|---------|
+| Should behavior | "should return error when..." |
+| When condition | "when user not found..." |
+| Given-when-then | "given X, when Y, then Z" |
 
-  describe('GET /users/:id', () => {
-    it('should return user by id', async () => {
-      const user = await createTestUser();
+### Grouping
 
-      const response = await request(app)
-        .get(`/users/${user.id}`)
-        .expect(200);
+| Level | Use |
+|-------|-----|
+| describe | Group related tests |
+| it/test | Individual case |
+| beforeEach | Common setup |
 
-      expect(response.body.data.id).toBe(user.id);
-    });
+---
 
-    it('should return 404 for non-existent user', async () => {
-      await request(app)
-        .get('/users/non-existent-id')
-        .expect(404);
-    });
-  });
-});
-```
+## 8. Test Data
 
-## Mocking
+### Strategies
 
-### Mock Functions
-```typescript
-// Simple mock
-const mockFn = jest.fn();
-mockFn.mockReturnValue(42);
+| Approach | Use |
+|----------|-----|
+| Factories | Generate test data |
+| Fixtures | Predefined datasets |
+| Builders | Fluent object creation |
 
-// Async mock
-mockFn.mockResolvedValue({ data: 'async result' });
-mockFn.mockRejectedValue(new Error('Failed'));
+### Principles
 
-// Implementation mock
-mockFn.mockImplementation((x) => x * 2);
-```
+- Use realistic data
+- Randomize non-essential values (faker)
+- Share common fixtures
+- Keep data minimal
 
-### Mock Modules
-```typescript
-// Mock entire module
-jest.mock('./emailService', () => ({
-  sendEmail: jest.fn().mockResolvedValue({ sent: true })
-}));
+---
 
-// Partial mock
-jest.mock('./utils', () => ({
-  ...jest.requireActual('./utils'),
-  fetchData: jest.fn()
-}));
-```
+## 9. Best Practices
 
-## Test Factories
+| Practice | Why |
+|----------|-----|
+| One assert per test | Clear failure reason |
+| Independent tests | No order dependency |
+| Fast tests | Run frequently |
+| Descriptive names | Self-documenting |
+| Clean up | Avoid side effects |
 
-```typescript
-// factories/user.factory.ts
-import { faker } from '@faker-js/faker';
+---
 
-export function createUserData(overrides = {}) {
-  return {
-    email: faker.internet.email(),
-    name: faker.person.fullName(),
-    password: faker.internet.password({ length: 12 }),
-    ...overrides
-  };
-}
+## 10. Anti-Patterns
 
-export async function createTestUser(overrides = {}) {
-  const data = createUserData(overrides);
-  return await db.user.create({ data });
-}
-```
+| ❌ Don't | ✅ Do |
+|----------|-------|
+| Test implementation | Test behavior |
+| Duplicate test code | Use factories |
+| Complex test setup | Simplify or split |
+| Ignore flaky tests | Fix root cause |
+| Skip cleanup | Reset state |
 
-## Best Practices
+---
 
-1. **Descriptive Names**: `should return error when email is invalid`
-2. **One Assert Per Test**: Focus on single behavior
-3. **Independent Tests**: No test dependencies
-4. **Clean Up**: Reset state between tests
-5. **Fast Tests**: Unit tests < 100ms
-6. **Avoid Implementation Details**: Test behavior
-7. **Use Factories**: Consistent test data
-8. **CI Integration**: Run tests automatically
+> **Remember:** Tests are documentation. If someone can't understand what the code does from the tests, rewrite them.
