@@ -2,8 +2,8 @@
 
 > **AI Development Orchestrator** - Transform Claude into a powerful development team with specialized agents, intelligent skills, and automated workflows.
 
-[![Agents](https://img.shields.io/badge/Agents-18-blue)](#-agents)
-[![Skills](https://img.shields.io/badge/Skills-50-green)](#-skills)
+[![Agents](https://img.shields.io/badge/Agents-17-blue)](#-agents)
+[![Skills](https://img.shields.io/badge/Skills-69-green)](#-skills)
 [![Commands](https://img.shields.io/badge/Commands-10-orange)](#-commands)
 [![Python](https://img.shields.io/badge/Scripts-7-yellow)](#-scripts)
 
@@ -11,10 +11,10 @@
 
 ## ✨ Features
 
-- 🤖 **18 Specialized Agents** - Expert AI personas for frontend, backend, test engineering, security, and more
-- 📚 **50 Skills** - Domain knowledge resources with patterns, best practices, and templates
+- 🤖 **17 Specialized Agents** - Expert AI personas for frontend, backend, test engineering, security, and more
+- 📚 **69 Skills** - Domain knowledge resources with patterns, best practices, and templates
 - ⚡ **10 Slash Commands** - Quick actions for creating, orchestrating, debugging, testing, and deploying
-- 🐍 **7 Python Scripts** - Automation hooks and AI-controlled quality & Deep Audit tools
+- 🐍 **7 Python Scripts** - Automation hooks, AI-controlled quality audit & [NEW] Visual Dashboard
 - 🎯 **Clean Code Standards** - CRITICAL skill for concise, direct, solution-focused code
 - 🎭 **6 Behavioral Modes** - Adaptive AI behavior: Brainstorm, Implement, Debug, Review, Teach, Ship
 - 🔄 **Project Detection** - Automatically detects project type and tech stack
@@ -135,13 +135,13 @@ The framework will:
 
 ```
 maestro/
-├── agents/              # 16 specialized AI agents
+├── agents/              # 17 specialized AI agents
 │   ├── frontend-specialist.md
 │   ├── backend-specialist.md
 │   ├── mobile-developer.md
 │   ├── devops-engineer.md
 │   └── ...
-├── skills/              # 38 knowledge resources
+├── skills/              # 69 knowledge resources
 │   ├── app-builder/
 │   ├── behavioral-modes/
 │   ├── react-patterns/
@@ -151,9 +151,10 @@ maestro/
 │   │   ├── react-native-app/
 │   │   └── nextjs-static/
 │   └── ...
-├── commands/            # 9 slash commands
+├── commands/            # 10 slash commands
 │   ├── create.md
 │   ├── enhance.md
+│   ├── orchestrate.md
 │   ├── debug.md
 │   └── ...
 ├── scripts/             # 7 Python automation scripts
@@ -162,7 +163,8 @@ maestro/
 │   ├── lint_check.py        # 🆕 AI-controlled quality audit
 │   ├── dependency_scanner.py
 │   ├── session_manager.py
-│   └── auto_preview.py
+│   ├── auto_preview.py
+│   └── setup.py
 ├── data/                # Runtime state
 ├── settings.json        # Hook configuration
 ├── CLAUDE.md           # AI behavior configuration
@@ -409,8 +411,8 @@ Hooks are configured in `settings.json`:
 
 | Category | Count |
 |----------|-------|
-| Agents | 18 |
-| Skills | 50 |
+| Agents | 17 |
+| Skills | 69 |
 | Commands | 10 |
 | Scripts | 7 |
 | Templates | 12 |

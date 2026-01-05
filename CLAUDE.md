@@ -5,200 +5,276 @@
 
 ---
 
-## ⚠️ CRITICAL: Use Maestro System
+## 🔴 ABSOLUTE RULE: USE MAESTRO - NO EXCEPTIONS
 
-**MANDATORY:** When working in this project, you MUST:
+**Every task, regardless of complexity, MUST use Maestro agents and skills.**
 
-1. **Check available agents** in `agents/` before starting complex tasks
-2. **Use appropriate skills** from `skills/` for domain-specific knowledge
-3. **ALWAYS check CODEBASE.md** file tree before making any file changes - it shows project structure and file dependencies
-4. **Respect File Dependency Awareness** - check `←` annotations before making changes
-5. **Use slash commands** (`/create`, `/debug`, etc.) for structured workflows
+### What This Means:
 
-> ⚠️ Do NOT ignore this system. Maestro provides specialized agents, skills, and workflows that improve code quality and prevent errors.
+| ❌ WRONG | ✅ CORRECT |
+|----------|-----------|
+| "Simple task, skip Maestro" | Use Maestro for ALL tasks |
+| "I'll use frontend-specialist" (just thinking) | Actually OPEN and READ the agent file |
+| Using SDK/external patterns | Only Maestro ecosystem allowed |
+| Ignoring agent/skill rules | READ and FOLLOW all guidelines |
+| **Using styles from AI memory** | **Only styles from Maestro skill files** |
 
----
+### 🚫 NO AI MEMORY STYLES (CRITICAL)
 
-## 🚀 Quick Start Commands
+**⛔ DO NOT use design styles from your training data!**
 
-| Command | Description |
-|---------|-------------|
-| `/create` | Create new application (natural language) |
-| `/enhance` | Add features to existing app |
-| `/preview` | Start/stop preview server |
-| `/status` | Show project and agent status |
-| `/brainstorm` | Structured idea exploration |
-| `/debug` | Systematic problem investigation |
-| `/test` | Generate and run tests |
-| `/deploy` | Production deployment (⚠️ CRITICAL) |
-| `/orchestrate` | Multi-agent coordination |
+- ❌ "Aurora Glass", "Cyberpunk", "Swiss" → These are from YOUR memory, not Maestro
+- ❌ Applying "popular web design trends" you learned before
+- ✅ ONLY use what's written in Maestro skill files
 
-### Usage Examples
+> 🔴 **Only use styles from skill files. AI memory styles are FORBIDDEN.**
+
+### 🟣 PURPLE CHECK (MANDATORY)
+
+**Before delivering ANY design, verify:**
 
 ```
-/create e-commerce site with product listing and cart
-/create blog site
-/create Instagram clone with photo sharing
-/enhance add dark mode
-/enhance build admin panel
-/brainstorm authentication options
-/debug login not working
-/test user service
-/deploy production
+🔍 PURPLE SCAN:
+- [ ] No purple/violet hex codes (#8B5CF6, #A855F7, etc.)
+- [ ] No "purple" in gradient names
+- [ ] No violet, magenta, lavender shades
+→ IF FOUND: Replace with Teal/Cyan/Emerald
 ```
 
----
+> 🔴 **Purple = INSTANT FAIL. No exceptions.**
 
-## 📖 Context Loading Order
+### 📐 NO TEMPLATE LAYOUTS (MANDATORY)
 
-Claude Code reads context files in this order:
-
-1. **`CLAUDE.md`** (this file) - Workspace-level configuration
-2. **`CODEBASE.md`** - Auto-generated project context (injected via hook stdout)
-
-### Why CODEBASE.md in Project Root?
-
-Context injection requires hook stdout output. `CODEBASE.md` is created in project root for reference:
-
-**How it works:**
-1. `session_hooks.py` creates `CODEBASE.md` in project root (for reference)
-2. Hook outputs content to stdout (for Claude context injection)
-3. Both happen on every session start
-
-> **Note:** `CODEBASE.md` is auto-generated on each session start and contains:
-> - Project type detection (Node.js, Python, etc.)
-> - Framework identification (Next.js, React Native, etc.)
-> - OS-specific terminal commands
-> - Complete project structure tree
-> - Clean code standards
-
----
-
-## 🤖 Available Agents (18)
-
-### Orchestration Agents
-
-| Agent | Expertise |
-|-------|-----------|
-| `project-planner` | Task breakdown, dependency graph, planning |
-| `orchestrator` | Multi-agent coordination, parallel execution |
-
-### Specialist Agents
-
-| Agent | Expertise |
-|-------|-----------|
-| `frontend-specialist` | React, Next.js, Tailwind CSS, TypeScript |
-| `backend-specialist` | Node.js, Express, Python, FastAPI |
-| `database-architect` | PostgreSQL, Prisma, schema design |
-| `devops-engineer` | PM2, deployment, CI/CD (⚠️ CRITICAL) |
-| `test-engineer` | Jest, Pytest, Playwright, TDD |
-| `security-auditor` | OWASP Top 10:2025, vulnerability scanning |
-| `penetration-tester` | 🆕 Offensive security, PTES, red team |
-| `performance-optimizer` | Core Web Vitals, bundle optimization |
-| `mobile-developer` | React Native, Flutter, Expo |
-| `api-designer` | REST API, GraphQL, OpenAPI |
-| `documentation-writer` | README, JSDoc, API docs |
-| `explorer-agent` | Deep directory scan, tech stack survey |
-| `debugger` | Root cause analysis, systematic debugging |
-| `seo-specialist` | 🆕 SEO, GEO, E-E-A-T, AI citations |
-| `game-developer` | 🆕 Unity, Godot, Unreal, Phaser, multiplayer |
-
----
-
-## 📚 Skills (50)
-
-### Core Skills
-
-| Skill | Purpose |
-|-------|---------|
-| `app-builder` | Main orchestrator - project building |
-| `clean-code` | **CRITICAL** - Concise, direct coding - no over-engineering |
-| `lint-and-validate` | **🆕 AI Quality Audit** - Style, logic, security (Ruff, ESLint) |
-| `conversation-manager` | User communication protocol |
-| `behavioral-modes` | AI modes: brainstorm, implement, debug, ship |
-| `geo-fundamentals` | **GEO** - AI search optimization (ChatGPT, Claude, Perplexity) |
-| `seo-fundamentals` | **SEO** - E-E-A-T, Core Web Vitals, Google updates |
-
-### Templates (12)
-
-| Template | Description |
-|----------|-------------|
-| `nextjs-fullstack` | Next.js + Prisma + Auth |
-| `nextjs-saas` | SaaS + Stripe + NextAuth |
-| `nextjs-static` | Landing page + Framer Motion |
-| `express-api` | REST API + JWT + Zod |
-| `python-fastapi` | FastAPI + SQLAlchemy + Pydantic |
-| `react-native-app` | Expo + React Query + Zustand |
-| `flutter-app` | Flutter + Riverpod + Go Router |
-| `electron-desktop` | Electron + React + IPC |
-| `chrome-extension` | Manifest V3 + React + Vite |
-| `cli-tool` | Commander.js + Inquirer + chalk |
-| `monorepo-turborepo` | Turborepo + pnpm workspaces |
-| `astro-static` | Astro + MDX + Content Collections |
-
-### Pattern Skills
+**⛔ DO NOT use standard template structures!**
 
 ```
-skills/
-├── api-patterns/         # REST/GraphQL patterns
-├── react-patterns/       # React component patterns
-├── mobile-patterns/      # Mobile development
-├── nodejs-best-practices/
-├── nextjs-best-practices/
-├── tailwind-patterns/
-├── database-design/
-├── security-checklist/
-├── testing-patterns/
-├── vulnerability-scanner/ # 🆕 DAST, SAST, SCA tools
-├── red-team-tactics/     # 🆕 MITRE ATT&CK, exploitation
-├── api-security-testing/ # 🆕 OWASP API Top 10, JWT
-└── ... (49 total)
+❌ FORBIDDEN (Template Patterns):
+├── Hero → 3-column features → CTA → Footer (EVERY site looks like this!)
+├── Centered hero with 2 buttons
+├── Symmetric 3-card grid
+├── Standard navbar left-logo right-links
+└── "Hero + Features + Testimonials + Pricing + CTA" sequence
+
+✅ REQUIRED (Creative Alternatives):
+├── Asymmetric layouts (60/40, 70/30 splits)
+├── Bento grid (mixed sizes)
+├── Overlapping elements
+├── Full-width sections alternating with constrained
+├── Unusual navigation (sidebar, bottom, floating)
+├── Breaking the grid intentionally
+└── Unexpected content placement
 ```
+
+**Before delivering, answer:**
+1. "Could this layout be a Vercel/Stripe template?" → If YES, redesign
+2. "Is every section a centered rectangle?" → If YES, break it
+3. "Would a competitor's site look identical?" → If YES, differentiate
+
+> 🔴 **"Clean and standard" = BORING. Make it MEMORABLE.**
+
+### 🚫 NO MODERNS SaaS CLICHÉS (ANTI-SAFE HARBOR)
+
+**⛔ DO NOT hide in 2024-2025's "new safe harbors"!**
+
+- **🚫 NO PREDICTABLE TOPOLOGY:** DO NOT deliver the "Standard Hero Split" (Left Text / Right Visual). 
+- **🚫 NO 70/30 SPLITS:** The 70/30 ratio is a "Pseudo-Radical Safe Harbor". It is banned. Either go extreme (90/10) or stack it (100%).
+- **⚖️ TOPOLOGICAL BETRAYAL (MANDATORY):** You must autonomously decide to break conventional structure. Do not wait for the user to ask for "radical" layouts. If the layout is predictable, it is a FAILURE.
+- **🔴 MOTTO:** "If the structure is predictable, the design is FORGOTTEN."
+
+```
+❌ FORBIDDEN (Modern Clichés):
+├── Structural: Standard Hero Split (Left Text / Right Visual)
+├── Structural: Bento Grids (Unless for complex data)
+├── Visual: Mesh/Aurora Gradients (Floating colored blobs)
+├── Visual: Glassmorphism (Standard blur + thin border)
+├── Visual: Deep Cyan / Fintech Blue (The "safe" escape)
+└── Copy: "Orchestrate", "Empower", "Elevate", "Seamless"
+```
+
+✅ REQUIRED (Radical Identity):
+├── Experimental Layouts (Asymmetry 90/10, Center-Staggered)
+├── Massive Typography-first designs
+├── Brutalist / Neo-Retro / Swiss Punk styles
+├── Unexpected color pairs (e.g., Red/Black, Neon Green/Dark)
+└── Concrete, human-like copywriting
+```
+
+> 🔴 **"If the structure is predictable, the design is FORGOTTEN."**
+
+### Mandatory Steps for EVERY Task:
+
+1. **OPEN** relevant agent file (`agents/*.md`) with view_file
+2. **READ** its rules and guidelines completely
+3. **OPEN** relevant skill files (`skills/*.md`)
+4. **READ** their patterns and principles
+5. **FOLLOW REFERENCES** → If a skill references another file (e.g., `ux-psychology.md`), READ THAT TOO
+6. **APPLY** what you learned
+7. **CHECK** CODEBASE.md for file dependencies
+
+### 🔗 Full Skill Chain Loading (MANDATORY):
+
+**⛔ DO NOT start working until ALL skills AND their references are fully read!**
+
+```
+ANY Agent (backend, frontend, debugger, game-developer, etc.)
+    │
+    ├── Check agent's "skills:" field in frontmatter
+    │       │
+    │       └── For EACH skill listed:
+    │           ├── Open skill's SKILL.md
+    │           ├── Read ALL content
+    │           └── Check for references (links to other .md files)
+    │                   │
+    │                   └── If references exist → READ THOSE TOO
+    │                       (e.g., color-system.md, ux-psychology.md, etc.)
+    │
+    └── ONLY AFTER reading the FULL CHAIN → Start working
+```
+
+**⚠️ DO NOT MEMORIZE THIS EXAMPLE - APPLY TO EVERY AGENT DYNAMICALLY:**
+- Each agent has DIFFERENT skills
+- Each skill has DIFFERENT references
+- You must CHECK and READ what's actually listed, not assume
+
+**Why This Matters:**
+- Referans okumadan çalışırsan eksik bilgiyle üretim yaparsın
+- Her agent'ın farklı skill zinciri var - EZBERLEMEDen her seferinde KONTROL ET
+- **EKSİK BİLGİ = EKSİK ÇIKTI**
+
+> 🔴 **If you skip a reference, your output will be INCOMPLETE. No exceptions.**
+
+### 🧠 READ → UNDERSTAND → APPLY (Not Just Read!)
+
+**⛔ READING IS NOT ENOUGH! You must UNDERSTAND the PRINCIPLES and PURPOSE.**
+
+```
+❌ WRONG: Read agent file → Start coding immediately
+✅ CORRECT: Read → Understand WHY → Apply PRINCIPLES → Code
+```
+
+**What "Understanding" Means:**
+
+| Just Reading | Actually Understanding |
+|--------------|------------------------|
+| "I saw ux-psychology.md" | "I understand Hick's Law means max 7 nav items" |
+| "I read animation-guide.md" | "I'll use ease-out for entry, ease-in for exit" |
+| "I checked color-system.md" | "Blue = Trust, so for finance site I'll use blue" |
+
+**Before Coding, Answer These:**
+1. **What is the GOAL of this agent/skill?** (e.g., create WOW, not generic)
+2. **What PRINCIPLES must I apply?** (e.g., Purple Ban, Radius Extremism)
+3. **What PSYCHOLOGY affects this?** (e.g., Fitts' Law for button sizes)
+4. **How does this style DIFFER from others?** (e.g., Neo-Luxury ≠ Minimalist)
+
+> 🔴 **If you can't explain the WHY behind a rule, you haven't understood it. GO BACK AND RE-READ.**
+
+### 🐢 NO RUSHING (STRICT)
+
+**⛔ QUALITY > SPEED. Slow down.**
+
+- ❌ Reading only headings → Read EVERY line
+- ❌ Seeing "(Ref: file.md)" but not opening → Open ALL refs
+- ❌ "I'll apply later" → Apply NOW or don't proceed
+
+> 🔴 **"Quick output" is NOT an excuse. INCOMPLETE = FAILED.**
+
+### 📝 Proof of Understanding
+
+**Before coding, declare what you understood:**
+
+```
+🧠 CHECKPOINT: [Agent] + [Skills read] + [3 principles I'll apply]
+```
+
+> 🔴 **Can't fill checkpoint? → GO BACK AND READ.**
+
+### Quick Reference:
+
+- **Frontend task?** → Read `frontend-specialist.md` + `frontend-design/SKILL.md` + ALL sub-references
+- **Backend task?** → Read `backend-specialist.md` + `nodejs-best-practices/SKILL.md`
+- **Bug fix?** → Read `debugger.md`
+- **Any code change?** → Check CODEBASE.md first
+
+> 🔴 **ZERO TOLERANCE:** Just mentioning agents in thoughts ≠ using them. You must ACTUALLY READ the files.
+> 
+> 🔴 **SDK/external patterns are FORBIDDEN.** Only Maestro.
 
 ---
 
-## 🐍 Python Scripts
+## 🚨 CRITICAL: ASK BEFORE BUILDING
 
-| Script | Hook | Purpose |
-|--------|------|---------|
-| `session_hooks.py` | SessionStart/End | Project detection, session tracking, dependency analysis |
-| `lint_check.py` | - | 🆕 AI Quality Audit (Ruff, Bandit, ESLint, TSC) |
-| `dependency_scanner.py` | SessionStart | 🆕 File dependency analysis (imports, API calls, DB models) |
-| `explorer_helper.py` | SessionStart | Deep project discovery |
-| `session_manager.py` | - | Project state management |
-| `auto_preview.py` | - | Preview server control |
-| `setup.py` | - | Cross-platform installation |
+**When user request is vague or open-ended, DO NOT assume. ASK FIRST.**
 
-### Dependencies
+### When to Ask Clarifying Questions:
 
-```bash
-pip install rich pydantic
+| Vague Request | Ask Before Proceeding |
+|---------------|----------------------|
+| "Build me a website" | What type? (e-commerce/blog/portfolio?) Target audience? |
+| "Make a design" | Color palette? Style? (minimal/bold/retro?) Layout preference? |
+| "Create an app" | Platform? (web/mobile?) Core features? Tech stack preference? |
+| "Add a feature" | Specific requirements? Priority? Edge cases? |
+| "Fix this" | Expected behavior? Steps to reproduce? |
+
+### Why This Matters:
+- Prevents wasted effort on wrong assumptions
+- Ensures output matches user's vision
+- Avoids AI defaulting to its "favorites" (dark mode, purple, etc.)
+
+### How to Ask:
 ```
+Before I proceed, I have a few questions to ensure I build exactly what you need:
+1. [Specific question about unclear aspect]
+2. [Another clarifying question]
+```
+
+### 🎨 Variety & Clarity Rule (MANDATORY):
+
+When asking questions, **DO NOT offer generic or boring options!** Every question must be:
+- **Diverse**: Include different styles and approaches
+- **Explanatory**: Briefly explain what each option means with a short example/context
+
+| ❌ Bad (Generic/Vague) | ✅ Good (Diverse/Explanatory) |
+|------------------------|-------------------------------|
+| "Color preference?" | "Which color palette? (🔵 Blue tones - Trust/Corporate, 🟢 Green - Nature/Fintech, 🟠 Orange - Energy/E-commerce, ⚫ Neutral/Black - Luxury/Minimal)" |
+| "Layout preference?" | "Page structure? (📄 Single column - Blog/Portfolio, 🔲 Grid - E-commerce/Gallery, 📐 Asymmetric - Creative/Agency, 🎛️ Dashboard - Admin/SaaS)" |
+| "UI library?" | "UI approach? (✍️ Pure Tailwind - Custom from scratch, 🧩 shadcn - Rapid prototype, 🎨 Custom CSS - Full control)" |
+
+> 🎯 **GOAL:** Help the user decide by offering **inspiring and clear** alternatives, not memorized generic options.
+
+### 🎭 Spirit Over Checklist (NO SELF-DECEPTION):
+
+**Checklist'i geçmek yetmez. Kuralların RUHUNU yakalamalısın!**
+
+| ❌ Self-Deception | ✅ Honest Assessment |
+|-------------------|----------------------|
+| "I used a custom color" (but it's still blue-white) | "Is this palette MEMORABLE?" |
+| "I have animations" (but just fade-in) | "Would a designer say WOW?" |
+| "Layout is varied" (but 3-column grid) | "Could this be a template?" |
+
+> 🔴 **If you find yourself DEFENDING your checklist compliance while the output looks generic, you have FAILED.**
+> The checklist serves the goal. The goal is NOT to pass the checklist.
+
+> 🚫 **DO NOT** default to your preferences (dark themes, purple colors, standard layouts) without asking!
 
 ---
 
-## 📋 Core Principles
+## 🌐 Language Handling
 
-### User Confirmation Rule
+**When user's prompt is NOT in English:**
 
-**CRITICAL:** Before taking any action outside explicit user request, **ALWAYS ask the user first.**
+1. **Internally translate to English** for better comprehension and processing
+2. **Always respond in the user's language** - match their communication language
+3. **Code comments and variable names** remain in English (coding standard)
 
-When user request is unclear or could be implemented multiple ways:
-- Ask clarifying questions
-- Offer options with trade-offs
-- Wait for user decision
-- Consider current tool (CLI, extension, etc.) when asking
+**Example:**
+```
+User writes in Turkish → 
+  Internal: Translate to understand better
+  Response: Reply in Turkish
+  Code: English comments/variables
+```
 
-**Examples:**
-- User: "optimize performance" → Ask: "Which area? Bundle size? Runtime? Database queries?"
-- User: "add authentication" → Ask: "Which method? JWT? Session? OAuth?"
-- User: "fix the bug" → Ask: "Which bug? Can you describe the issue?"
-
-**What requires confirmation:**
-- ❌ NOT: Simple, direct tasks with clear requirements
-- ✅ YES: Ambiguous requests with multiple valid approaches
-- ✅ YES: Changes affecting architecture or multiple files
-- ✅ YES: Installing new dependencies or tools
+> This ensures accurate understanding while maintaining natural communication.
 
 ---
 
@@ -235,19 +311,6 @@ The `CODEBASE.md` file contains a **📊 File Dependencies** section that shows:
 
 ---
 
-## 🎭 Behavioral Modes
-
-| Mode | Trigger Keywords | Behavior |
-|------|------------------|----------|
-| BRAINSTORM | "ideas", "options", "what if" | Explore alternatives, no code |
-| IMPLEMENT | "build", "create", "add" | Fast execution, production code |
-| DEBUG | "error", "not working", "bug" | Systematic investigation |
-| REVIEW | "review", "check", "audit" | Thorough analysis |
-| TEACH | "explain", "how does" | Educational explanations |
-| SHIP | "deploy", "production" | Pre-flight checks, safety |
-
----
-
 ## 🎭 Claude Code Mode Mapping
 
 **IMPORTANT:** When user selects a Claude Code mode, use the corresponding agents and skills:
@@ -281,104 +344,6 @@ The `CODEBASE.md` file contains a **📊 File Dependencies** section that shows:
 
 ---
 
-## 📁 Project Structure
-
-```
-c:\claude\
-├── agents/          # 18 specialized agents
-├── skills/          # 49 knowledge resources
-├── commands/        # 10 slash commands
-├── scripts/         # 6 Python automation scripts
-├── data/            # Runtime state
-├── settings.json    # Hook configuration
-├── README.md        # Project documentation
-└── CLAUDE.md        # This file
-```
-
----
-
-## ⚙️ Hook Configuration
-
-Hooks are configured in `settings.json` (platform-specific):
-
-### Windows (`settings.example.windows.json`)
-
-```json
-{
-  "hooks": {
-    "SessionStart": [
-      {
-        "matcher": "startup",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python \"%USERPROFILE%\\.claude\\scripts\\session_hooks.py\" start"
-          },
-          {
-            "type": "command",
-            "command": "python \"%USERPROFILE%\\.claude\\scripts\\explorer_helper.py\" . --silent"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python \"%USERPROFILE%\\.claude\\scripts\\session_hooks.py\" end --silent"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-### macOS/Linux (`settings.example.unix.json`)
-
-```json
-{
-  "hooks": {
-    "SessionStart": [
-      {
-        "matcher": "startup",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ~/.claude/scripts/session_hooks.py start"
-          },
-          {
-            "type": "command",
-            "command": "python3 ~/.claude/scripts/explorer_helper.py . --silent"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 ~/.claude/scripts/session_hooks.py end --silent"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-**Key Differences:**
-- **Windows:** Uses `python` and `%USERPROFILE%\.claude\` paths
-- **macOS/Linux:** Uses `python3` and `~/.claude/` paths
-- **SessionStart:** Runs both `session_hooks.py` and `explorer_helper.py`
-- **SessionEnd:** Only runs `session_hooks.py` with `--silent` flag
-
----
-
 **Version:** 3.1 - Maestro AI Development Orchestrator  
-**Last Updated:** 2026-01-02
+**Last Updated:** 2026-01-03
 
