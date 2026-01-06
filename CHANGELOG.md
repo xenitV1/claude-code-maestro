@@ -9,29 +9,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 📱 Comprehensive Mobile Development Expansion
 
+### 🧠 Mobile Psychology & Engineering Culture (CRITICAL)
+- **Touch Psychology & Ergonomics**:
+  - Implemented **Fitts' Law** and **Thumb Zone** principles for layout decisions.
+  - Buttons and interactables now strictly follow specific hit-area and placement rules for optimal user reachability.
+  - New skill `skills/mobile-design/touch-psychology.md` serves as the primary ergonomic reference.
+- **Professional Testing & Debugging**:
+  - Introduced "Production-Grade" testing culture: Not just "writing tests," but defining strategies.
+  - Added specialized toolchains for **Detox, Maestro, Flipper, and Reactotron**.
+  - New skills: `mobile-testing.md` (E2E/Unit strategies) and `mobile-debugging.md` (Native vs JS logs).
+
 ### Added
-- **New Mobile Skills (CRITICAL)** 📚
-  - `mobile-testing.md`: E2E (Detox/Maestro), Testing Pyramid, Offline/Network testing.
-  - `mobile-debugging.md`: Native vs JS logs, Flipper, Reactotron, adb logcat, Xcode console.
-  - `mobile-backend.md`: Push notifications, offline sync (TanStack Query), mobile-first API design.
-  - `mobile-design-thinking.md`: Anti-memorization for mobile, deep context selection.
-- **Enhanced Mobile Developer Agent** 🤖
-  - Added **MANDATORY Build Verification** loop (Android/iOS builds required before finishing).
-  - Added **Platform-Aware SDK Paths** (Stop random searching for Android Sdk/Emulator).
-  - Expanded reference chain (now 13 specialized mobile files).
+- **13 New Specialized Mobile Skills (Complete Inventory)** 📚
+  - **Core Strategy**:
+    - `SKILL.md`: Central hub with anti-patterns and mandatory checkpoints.
+    - `mobile-design-thinking.md`: Anti-memorization protocols and deep context analysis.
+    - `decision-trees.md`: Context-based decision frameworks for stack/state/nav selection.
+  - **Platform Mastery**:
+    - `platform-ios.md`: iOS Human Interface Guidelines (HIG), SF Symbols, and patterns.
+    - `platform-android.md`: Material Design 3, Adaptive layouts, and Android specifics.
+  - **Engineering & Operations**:
+    - `mobile-testing.md`: E2E (Detox/Maestro), Testing Pyramid, Offline/Network testing.
+    - `mobile-debugging.md`: Native vs JS logs, Flipper, Reactotron, adb logcat, Xcode.
+    - `mobile-backend.md`: Offline Sync (TanStack Query), Push Notifications, API security.
+    - `mobile-performance.md`: Frame drops, memory leaks, list virtualization (FlashList).
+  - **UX & Design Systems**:
+    - `touch-psychology.md`: Ergonomics, Fitts' Law, Thumb Zones.
+    - `mobile-navigation.md`: Tab/Stack/Drawer patterns, Deep Linking.
+    - `mobile-typography.md`: Dynamic Type (iOS), SP units (Android), readable scales.
+    - `mobile-color-system.md`: Dark mode, OLED optimization, contrast ratios.
+
+- **Mandatory Build Verification Loop** 🛡️
+  - **Absolute Rule**: Agents CANNOT mark a mobile task as complete without successfully running a native build (`run-android` / `run-ios`).
 - **Framework Detection Expansion** 🔍
   - Added **Flutter** detection via `pubspec.yaml`.
   - Added **Ionic / Capacitor** detection (@ionic/react, @capacitor/core).
 
 ### Fixed
 - **Explorer Helper & CODEBASE.md** 🐍
-  - Fixed bug where `node_modules` were counted in directory summaries (59,000 files → actual file count).
-  - Fixed "Invisible Directory Structure" bug: First-level project dirs (e.g., `src/`, `App/`) now always expand regardless of item count.
+  - **CRITICAL FIX**: `node_modules` and other heavy directories are now correctly excluded from file counts.
+  - **Context Cleanliness**: AI now sees a clean, focused `CODEBASE.md` without thousands of dependency files.
+  - Fixed "Invisible Directory Structure" bug: core project folders (`src`, `lib`) are always expanded.
 - **Setup Script** 🛠️
   - Updated internal counters for TUI installer (Skills: 69 → 78).
 
 ### Changed
-- **README.md & CLAUDE.md**: Updated counts and added documentation for new mobile skills.
+- **README.md & CLAUDE.md**: Updated counts and added documentation for all new mobile capabilities.
 - **scripts/README.md**: Updated architecture details and version to 2.1.
 
 ---
