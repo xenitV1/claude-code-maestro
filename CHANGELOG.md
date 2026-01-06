@@ -5,6 +5,37 @@ All notable changes to Maestro will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.4] - 2026-01-06
+
+### 📱 Comprehensive Mobile Development Expansion
+
+### Added
+- **New Mobile Skills (CRITICAL)** 📚
+  - `mobile-testing.md`: E2E (Detox/Maestro), Testing Pyramid, Offline/Network testing.
+  - `mobile-debugging.md`: Native vs JS logs, Flipper, Reactotron, adb logcat, Xcode console.
+  - `mobile-backend.md`: Push notifications, offline sync (TanStack Query), mobile-first API design.
+  - `mobile-design-thinking.md`: Anti-memorization for mobile, deep context selection.
+- **Enhanced Mobile Developer Agent** 🤖
+  - Added **MANDATORY Build Verification** loop (Android/iOS builds required before finishing).
+  - Added **Platform-Aware SDK Paths** (Stop random searching for Android Sdk/Emulator).
+  - Expanded reference chain (now 13 specialized mobile files).
+- **Framework Detection Expansion** 🔍
+  - Added **Flutter** detection via `pubspec.yaml`.
+  - Added **Ionic / Capacitor** detection (@ionic/react, @capacitor/core).
+
+### Fixed
+- **Explorer Helper & CODEBASE.md** 🐍
+  - Fixed bug where `node_modules` were counted in directory summaries (59,000 files → actual file count).
+  - Fixed "Invisible Directory Structure" bug: First-level project dirs (e.g., `src/`, `App/`) now always expand regardless of item count.
+- **Setup Script** 🛠️
+  - Updated internal counters for TUI installer (Skills: 69 → 78).
+
+### Changed
+- **README.md & CLAUDE.md**: Updated counts and added documentation for new mobile skills.
+- **scripts/README.md**: Updated architecture details and version to 2.1.
+
+---
+
 ## [0.2.0] - 2026-01-05
 
 ### 🎨 Major Design Philosophy Overhaul
@@ -329,7 +360,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/xenitV1/claude-code-maestro/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/xenitV1/claude-code-maestro/compare/v0.2.4...HEAD
+[0.2.4]: https://github.com/xenitV1/claude-code-maestro/compare/v0.2.0...v0.2.4
 [0.2.0]: https://github.com/xenitV1/claude-code-maestro/compare/v0.0.7...v0.2.0
 [0.0.7]: https://github.com/xenitV1/claude-code-maestro/compare/v0.0.6...v0.0.7
 [0.0.6]: https://github.com/xenitV1/claude-code-maestro/compare/v0.0.5...v0.0.6

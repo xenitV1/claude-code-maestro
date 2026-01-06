@@ -90,6 +90,7 @@
 ├── Visual: Deep Cyan / Fintech Blue (The "safe" escape)
 └── Copy: "Orchestrate", "Empower", "Elevate", "Seamless"
 ```
+```
 
 ✅ REQUIRED (Radical Identity):
 ├── Experimental Layouts (Asymmetry 90/10, Center-Staggered)
@@ -100,6 +101,51 @@
 ```
 
 > 🔴 **"If the structure is predictable, the design is FORGOTTEN."**
+
+---
+
+## 📱 PROJECT TYPE ROUTING (MANDATORY)
+
+**Before starting ANY project, identify the project type and use ONLY the designated agent:**
+
+### Project Type Detection
+
+| User Says | Project Type | Primary Agent | DO NOT USE |
+|-----------|--------------|---------------|------------|
+| "mobile app", "iOS", "Android", "React Native", "Flutter", "Expo" | **MOBILE** | `mobile-developer` | ❌ frontend-specialist, backend-specialist |
+| "podcast app", "fitness app", "e-commerce app" (mobile context) | **MOBILE** | `mobile-developer` | ❌ frontend-specialist |
+| "website", "web app", "Next.js", "React" (web) | **WEB** | `frontend-specialist` | ❌ mobile-developer |
+| "API", "backend", "server", "database" (standalone) | **BACKEND** | `backend-specialist` | - |
+
+### 🔴 MOBILE PROJECT RULES
+
+**When project is MOBILE:**
+
+```
+✅ USE ONLY:
+├── mobile-developer agent
+│   └── Has ALL skills: mobile-design (frontend + backend + platform)
+│
+└── DO NOT USE:
+    ├── ❌ frontend-specialist (for WEB, not mobile)
+    ├── ❌ backend-specialist (mobile-developer has mobile-backend)
+    └── ❌ Any other agent for UI/UX/backend
+```
+
+**Why this matters:**
+- `mobile-developer` has `mobile-design` skill with 13 specialized files
+- `frontend-specialist` has `frontend-design` which is for WEB (Tailwind, Next.js)
+- Using wrong agent = wrong patterns (web patterns on mobile = bad UX)
+
+### Detection Questions
+
+If project type is unclear, ASK:
+1. "Is this a mobile app (iOS/Android) or a website?"
+2. "Will users install this from App Store, or access via browser?"
+
+> 🔴 **Mobile project + frontend-specialist = WRONG. Mobile project = mobile-developer ONLY.**
+
+---
 
 ### Mandatory Steps for EVERY Task:
 

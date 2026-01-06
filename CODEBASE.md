@@ -12,7 +12,7 @@
 | **Framework** | `Unknown` |
 | **Type** | `Unknown` |
 | **OS** | Windows |
-| **Path** | `c:\claude` |
+| **Path** | `C:\claude` |
 
 ---
 

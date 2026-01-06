@@ -3,18 +3,18 @@
 > **AI Development Orchestrator** - Transform Claude into a powerful development team with specialized agents, intelligent skills, and automated workflows.
 
 [![Agents](https://img.shields.io/badge/Agents-17-blue)](#-agents)
-[![Skills](https://img.shields.io/badge/Skills-69-green)](#-skills)
+[![Skills](https://img.shields.io/badge/Skills-78-green)](#-skills)
 [![Commands](https://img.shields.io/badge/Commands-10-orange)](#-commands)
-[![Python](https://img.shields.io/badge/Scripts-7-yellow)](#-scripts)
+[![Python](https://img.shields.io/badge/Scripts-8-yellow)](#-scripts)
 
 ---
 
 ## ✨ Features
 
 - 🤖 **17 Specialized Agents** - Expert AI personas for frontend, backend, test engineering, security, and more
-- 📚 **69 Skills** - Domain knowledge resources with patterns, best practices, and templates
+- 📚 **78 Skills** - Domain knowledge resources with patterns, best practices, and templates
 - ⚡ **10 Slash Commands** - Quick actions for creating, orchestrating, debugging, testing, and deploying
-- 🐍 **7 Python Scripts** - Automation hooks, AI-controlled quality audit & [NEW] Visual Dashboard
+- 🐍 **8 Python Scripts** - Automation hooks, AI-controlled quality audit & [NEW] Visual Dashboard
 - 🎯 **Clean Code Standards** - CRITICAL skill for concise, direct, solution-focused code
 - 🎭 **6 Behavioral Modes** - Adaptive AI behavior: Brainstorm, Implement, Debug, Review, Teach, Ship
 - 🔄 **Project Detection** - Automatically detects project type and tech stack
@@ -157,14 +157,15 @@ maestro/
 │   ├── orchestrate.md
 │   ├── debug.md
 │   └── ...
-├── scripts/             # 7 Python automation scripts
+├── scripts/             # 8 Python automation scripts
 │   ├── session_hooks.py
 │   ├── explorer_helper.py
 │   ├── lint_check.py        # 🆕 AI-controlled quality audit
 │   ├── dependency_scanner.py
 │   ├── session_manager.py
 │   ├── auto_preview.py
-│   └── setup.py
+│   ├── setup.py
+│   └── README.md
 ├── data/                # Runtime state
 ├── settings.json        # Hook configuration
 ├── CLAUDE.md           # AI behavior configuration
@@ -215,7 +216,7 @@ Specialized AI agents that handle different aspects of development:
 | **explorer-agent** | Codebase exploration, dependency research | 210 |
 | **debugger** | Root cause analysis, systematic debugging | 250+ |
 | **api-designer** | REST/GraphQL, OpenAPI, API security | 521 |
-| **mobile-developer** | React Native, Flutter, Expo, App Store | 354 |
+| **mobile-developer** | React Native, Flutter, Expo, App Store | 278 |
 | **devops-engineer** | PM2, deployment, CI/CD, rollback | 275 |
 | **test-engineer** | Testing strategies, TDD, coverage | 268 |
 | **security-auditor** | Security review, vulnerabilities | 229 |
@@ -242,7 +243,7 @@ Knowledge resources that agents reference for domain expertise:
 ### 🏗️ Architecture & Patterns
 - `api-patterns` - REST/GraphQL design patterns
 - `react-patterns` - React component patterns
-- `mobile-patterns` - Mobile development patterns
+- `mobile-patterns` - Mobile development patterns (Testing, Debugging, Backend)
 - `nodejs-best-practices` - Node.js 23 patterns (Native TS, SQLite)
 - `nextjs-best-practices` - Next.js 15 App Router & React 19 patterns
 - `frontend-design` - 2025 Design Precision (8-point grid, Golden Ratio)
@@ -262,6 +263,10 @@ Knowledge resources that agents reference for domain expertise:
 - `systematic-debugging` - Debugging methodology
 - `lint-and-validate` - 🆕 AI-controlled quality audit (ESLint, TSC, Ruff, Bandit)
 - `mobile-ux-patterns` - Touch gestures, haptics, accessibility
+- `mobile-design-thinking` - ⚠️ Anti-memorization, deep context analysis
+- `mobile-backend` - Push notifications, offline sync, mobile API
+- `mobile-testing` - Testing pyramid, E2E (Detox/Maestro), platform-specific
+- `mobile-debugging` - Native vs JS debugging, Flipper, Logcat
 
 ---
 
