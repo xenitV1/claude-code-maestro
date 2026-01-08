@@ -1,12 +1,23 @@
 ---
 name: mobile-design
 description: Mobile-first design thinking and decision-making for iOS and Android apps. Touch interaction, performance patterns, platform conventions. Teaches principles, not fixed values. Use when building React Native, Flutter, or native mobile apps.
+allowed-tools: Read, Glob, Grep, Bash
 ---
 
 # Mobile Design System
 
 > **Philosophy:** Touch-first. Battery-conscious. Platform-respectful. Offline-capable.
 > **Core Principle:** Mobile is NOT a small desktop. THINK mobile constraints, ASK platform choice.
+
+---
+
+## 🔧 Runtime Scripts
+
+**Execute these for validation (don't read, just run):**
+
+| Script | Purpose | Usage |
+|--------|---------|-------|
+| `scripts/mobile_audit.py` | Mobile UX & Touch Audit | `python scripts/mobile_audit.py <project_path>` |
 
 ---
 
