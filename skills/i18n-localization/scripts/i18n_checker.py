@@ -8,6 +8,13 @@ import re
 import json
 from pathlib import Path
 
+# Fix Windows console encoding for Unicode output
+try:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+except AttributeError:
+    pass  # Python < 3.7
+
 # Patterns that indicate hardcoded strings (should be translated)
 HARDCODED_PATTERNS = {
     'jsx': [
@@ -66,7 +73,7 @@ def check_locale_completeness(locale_files: list) -> dict:
     passed = []
     
     if not locale_files:
-        return {'passed': [], 'issues': ["⚠️ No locale files found"]}
+        return {'passed': [], 'issues': ["[!] No locale files found"]}
     
     # Group by parent folder (language)
     locales = {}
@@ -82,10 +89,10 @@ def check_locale_completeness(locale_files: list) -> dict:
                 continue
     
     if len(locales) < 2:
-        passed.append(f"✅ Found {len(locale_files)} locale file(s)")
+        passed.append(f"[OK] Found {len(locale_files)} locale file(s)")
         return {'passed': passed, 'issues': issues}
     
-    passed.append(f"✅ Found {len(locales)} language(s): {', '.join(locales.keys())}")
+    passed.append(f"[OK] Found {len(locales)} language(s): {', '.join(locales.keys())}")
     
     # Compare keys across locales
     all_langs = list(locales.keys())
@@ -99,14 +106,14 @@ def check_locale_completeness(locale_files: list) -> dict:
             
             missing = base_keys - other_keys
             if missing:
-                issues.append(f"❌ {lang}/{namespace}: Missing {len(missing)} keys")
+                issues.append(f"[X] {lang}/{namespace}: Missing {len(missing)} keys")
             
             extra = other_keys - base_keys
             if extra:
-                issues.append(f"⚠️ {lang}/{namespace}: {len(extra)} extra keys")
+                issues.append(f"[!] {lang}/{namespace}: {len(extra)} extra keys")
     
     if not issues:
-        passed.append("✅ All locales have matching keys")
+        passed.append("[OK] All locales have matching keys")
     
     return {'passed': passed, 'issues': issues}
 
@@ -141,7 +148,7 @@ def check_hardcoded_strings(project_path: Path) -> dict:
                   ['node_modules', '.git', 'dist', 'build', '__pycache__', 'venv', 'test', 'spec'])]
     
     if not code_files:
-        return {'passed': ["⚠️ No code files found"], 'issues': []}
+        return {'passed': ["[!] No code files found"], 'issues': []}
     
     files_with_i18n = 0
     files_with_hardcoded = 0
@@ -175,17 +182,17 @@ def check_hardcoded_strings(project_path: Path) -> dict:
         except:
             continue
     
-    passed.append(f"✅ Analyzed {len(code_files)} code files")
+    passed.append(f"[OK] Analyzed {len(code_files)} code files")
     
     if files_with_i18n > 0:
-        passed.append(f"✅ {files_with_i18n} files use i18n")
+        passed.append(f"[OK] {files_with_i18n} files use i18n")
     
     if files_with_hardcoded > 0:
-        issues.append(f"❌ {files_with_hardcoded} files may have hardcoded strings")
+        issues.append(f"[X] {files_with_hardcoded} files may have hardcoded strings")
         for ex in hardcoded_examples:
             issues.append(f"   → {ex}")
     else:
-        passed.append("✅ No obvious hardcoded strings detected")
+        passed.append("[OK] No obvious hardcoded strings detected")
     
     return {'passed': passed, 'issues': issues}
 
@@ -193,9 +200,9 @@ def main():
     target = sys.argv[1] if len(sys.argv) > 1 else "."
     project_path = Path(target)
     
-    print("\n" + "🌍" * 30)
-    print("i18n CHECKER - Internationalization Audit")
-    print("🌍" * 30 + "\n")
+    print("\n" + "=" * 60)
+    print("  i18n CHECKER - Internationalization Audit")
+    print("=" * 60 + "\n")
     
     # Check locale files
     locale_files = find_locale_files(project_path)
@@ -205,14 +212,14 @@ def main():
     code_result = check_hardcoded_strings(project_path)
     
     # Print results
-    print("📁 LOCALE FILES")
+    print("[LOCALE FILES]")
     print("-" * 40)
     for item in locale_result['passed']:
         print(f"  {item}")
     for item in locale_result['issues']:
         print(f"  {item}")
     
-    print("\n📝 CODE ANALYSIS")
+    print("\n[CODE ANALYSIS]")
     print("-" * 40)
     for item in code_result['passed']:
         print(f"  {item}")
@@ -220,14 +227,14 @@ def main():
         print(f"  {item}")
     
     # Summary
-    critical_issues = sum(1 for i in locale_result['issues'] + code_result['issues'] if i.startswith("❌"))
+    critical_issues = sum(1 for i in locale_result['issues'] + code_result['issues'] if i.startswith("[X]"))
     
     print("\n" + "=" * 60)
     if critical_issues == 0:
-        print("✅ i18n CHECK: PASSED")
+        print("[OK] i18n CHECK: PASSED")
         sys.exit(0)
     else:
-        print(f"❌ i18n CHECK: {critical_issues} issues found")
+        print(f"[X] i18n CHECK: {critical_issues} issues found")
         sys.exit(1)
 
 if __name__ == "__main__":

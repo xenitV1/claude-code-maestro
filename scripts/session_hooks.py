@@ -247,7 +247,7 @@ def get_os_commands(os_info: Dict[str, str]) -> str:
     shell = os_info.get("shell", "Unknown")
 
     if os_name == "Windows":
-        return """#### 🪟 Windows Terminal Commands
+        return """#### [WINDOWS] Terminal Commands
 
 ##### PowerShell
 ```powershell
@@ -281,7 +281,7 @@ winget list              # List installed apps
 """
 
     elif os_name == "macOS":
-        return """#### 🍎 macOS Terminal Commands
+        return """#### [MACOS] Terminal Commands
 
 ##### Shell (zsh/bash)
 ```bash
@@ -316,7 +316,7 @@ brew update               # Update Homebrew
 """
 
     else:  # Linux
-        return """#### 🐧 Linux Terminal Commands
+        return """#### [LINUX] Terminal Commands
 
 ##### Shell (bash/zsh)
 ```bash
@@ -471,11 +471,11 @@ def load_discovery_structure(project_path: str, import_counts: dict = None) -> s
             collapsed = scan_stats.get('dirs_collapsed', 0)
             skipped = scan_stats.get('dirs_skipped', 0)
             if collapsed > 0 or skipped > 0:
-                stats_note = f"\n> 📊 Showing {files} files. {collapsed} dirs summarized, {skipped} dirs excluded (node_modules, etc.)\n"
+                stats_note = f"\n> [STATS] Showing {files} files. {collapsed} dirs summarized, {skipped} dirs excluded (node_modules, etc.)\n"
 
-        return f"""## 📂 Project Structure
+        return f"""## Project Structure
 
-> **Legend:** `file.ts ← A.tsx, B.tsx` = This file is **imported by** A.tsx and B.tsx.
+> **Legend:** `file.ts <- A.tsx, B.tsx` = This file is **imported by** A.tsx and B.tsx.
 > Directories with `[N files: ...]` are summarized to reduce size.{stats_note}
 
 ```
@@ -669,7 +669,7 @@ def scan_file_dependencies(project_path: str) -> tuple:
     if summary["total_files"] == 0:
         return "", {}
     
-    md_lines = ["## 📊 File Dependencies\n"]
+    md_lines = ["## File Dependencies\n"]
     md_lines.append(f"> Scanned {summary['total_files']} files\n")
     
     if summary["api_endpoints"]:
@@ -718,7 +718,7 @@ def generate_context_markdown(session_info: Dict, analysis: Dict, os_info: Dict[
 
 ---
 
-## 📁 Project Info
+## Project Info
 
 | Property | Value |
 |----------|-------|
@@ -859,9 +859,9 @@ def session_end(project_path: str, silent: bool = False):
     sys.stdout.write(json.dumps(output, ensure_ascii=False) + "\n")
 
     if not silent:
-        print(f"\n✅ Session completed")
+        print(f"\n[OK] Session completed")
         if duration:
-            print(f"⏱️ Duration: {duration}")
+            print(f"[TIME] Duration: {duration}")
 
 
 def main():

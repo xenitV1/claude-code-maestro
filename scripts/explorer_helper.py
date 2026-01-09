@@ -366,9 +366,9 @@ class SmartTreeGenerator:
                     self.file_count += 1
         
         except PermissionError:
-            return {"🔒": "Access Denied"}
+            return {"[LOCKED]": "Access Denied"}
         except OSError as e:
-            return {"❌": str(e)}
+            return {"[ERROR]": str(e)}
         
         return tree
     
@@ -518,13 +518,12 @@ def main():
         debug_log(f"Report saved to {output_file}")
 
         if not args.silent:
-            print(f"✅ Smart project discovery completed (Depth: {args.depth})")
-            print(f"📊 Stats: {stats.get('files_included', 0)} files included, "
+            print(f"[OK] Smart project discovery completed (Depth: {args.depth})")
+            print(f"[STATS] {stats.get('files_included', 0)} files included, "
                   f"{stats.get('dirs_collapsed', 0)} dirs summarized")
-            print(f"📁 Report: {output_file}")
+            print(f"[REPORT] {output_file}")
             if report['tech_stack']:
-                print(f"🔧 Tech: {', '.join(report['tech_stack'])}")
-
+                print(f"[TECH] {', '.join(report['tech_stack'])}")
         debug_log("EXPLORER completed successfully")
         
     except Exception as e:

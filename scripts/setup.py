@@ -88,18 +88,18 @@ def get_all_scripts() -> List[str]:
 def show_banner():
     """Show welcome banner."""
     banner = """
-    ╔═══════════════════════════════════════════════════════════════╗
-    ║                                                               ║
-    ║   🎼  M A E S T R O                                          ║
-    ║                                                               ║
-    ║   AI Development Orchestrator for Claude Code                 ║
-    ║                                                               ║
-    ╚═══════════════════════════════════════════════════════════════╝
+    +===============================================================+
+    |                                                               |
+    |   [*]  M A E S T R O                                          |
+    |                                                               |
+    |   AI Development Orchestrator for Claude Code                 |
+    |                                                               |
+    +===============================================================+
     """
 
     if RICH_AVAILABLE and console:
         console.print(Panel.fit(
-            "[bold cyan]🎼 MAESTRO[/bold cyan]\n\n"
+            "[bold cyan][*] MAESTRO[/bold cyan]\n\n"
             "[dim]AI Development Orchestrator for Claude Code[/dim]\n\n"
             f"Platform: [green]{platform.system()}[/green] ({platform.machine()})",
             border_style="cyan"
@@ -142,17 +142,17 @@ def show_what_will_be_installed(repo_dir: Path, claude_dir: Path):
         print(f"  To:   {claude_dir}")
         return
 
-    tree = Tree(f"[bold]📁 {claude_dir}[/bold]")
+    tree = Tree(f"[bold][DIR] {claude_dir}[/bold]")
 
-    scripts = tree.add("📂 scripts/")
+    scripts = tree.add("[DIR] scripts/")
     for script in get_all_scripts():
-        scripts.add(f"📄 {script}")
+        scripts.add(f"[FILE] {script}")
 
-    data = tree.add("📂 data/")
-    data.add("📂 projects/")
-    data.add("📂 reports/")
+    data = tree.add("[DIR] data/")
+    data.add("[DIR] projects/")
+    data.add("[DIR] reports/")
 
-    tree.add("📄 settings.json")
+    tree.add("[FILE] settings.json")
 
     console.print("\n[bold]Installation Preview:[/bold]")
     console.print(tree)
@@ -250,24 +250,24 @@ def show_verification(results: Dict[str, Any]):
     table.add_column("Status", justify="center")
 
     # Settings
-    status = "[green]✓ OK[/green]" if results["settings"] else "[red]✗ Missing[/red]"
+    status = "[green][OK][/green]" if results["settings"] else "[red][X] Missing[/red]"
     table.add_row("settings.json", status)
 
     # Data dir
-    status = "[green]✓ OK[/green]" if results["data_dir"] else "[red]✗ Missing[/red]"
+    status = "[green][OK][/green]" if results["data_dir"] else "[red][X] Missing[/red]"
     table.add_row("data/", status)
 
     # Scripts
     for script, ok in results["scripts"].items():
-        status = "[green]✓ OK[/green]" if ok else "[red]✗ Missing[/red]"
+        status = "[green][OK][/green]" if ok else "[red][X] Missing[/red]"
         table.add_row(f"scripts/{script}", status)
 
     console.print(table)
 
     if results["overall"]:
-        console.print("\n[bold green]✓ Installation verified successfully![/bold green]")
+        console.print("\n[bold green][OK] Installation verified successfully![/bold green]")
     else:
-        console.print("\n[bold red]✗ Some components are missing. Run setup again.[/bold red]")
+        console.print("\n[bold red][X] Some components are missing. Run setup again.[/bold red]")
 
 
 def uninstall(claude_dir: Path) -> None:

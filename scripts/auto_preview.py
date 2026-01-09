@@ -146,7 +146,7 @@ def start_preview(project_path: str, port: int = 3000) -> dict:
     # Port control
     if is_port_in_use(port):
         new_port = find_available_port(port)
-        print(f"⚠️  Port {port} in use, {new_port} will be used.")
+        print(f"[!] Port {port} in use, {new_port} will be used.")
         port = new_port
     
     # Detect project type
@@ -160,7 +160,7 @@ def start_preview(project_path: str, port: int = 3000) -> dict:
     env = os.environ.copy()
     env["PORT"] = str(port)
     
-    print(f"🚀 Starting preview...")
+    print(f"[START] Starting preview...")
     print(f"   Project: {project_path}")
     print(f"   Type: {project_type}")
     print(f"   Port: {port}")
@@ -194,10 +194,10 @@ def start_preview(project_path: str, port: int = 3000) -> dict:
         
         health_ok, health_msg = check_health(port)
         if health_ok:
-            print(f"\n✅ Preview ready!")
+            print(f"\n[OK] Preview ready!")
             print(f"   URL: http://localhost:{port}")
         else:
-            print(f"\n⏳ Starting server... (health check: {health_msg})")
+            print(f"\n[...] Starting server... (health check: {health_msg})")
             print(f"   URL: http://localhost:{port}")
         
         return {
@@ -229,7 +229,7 @@ def stop_preview() -> dict:
         # Clear status
         save_preview_status({})
         
-        print(f"✅ Preview stopped (PID: {pid})")
+        print(f"[OK] Preview stopped (PID: {pid})")
         return {"success": True, "stopped_pid": pid}
         
     except Exception as e:
@@ -241,19 +241,19 @@ def get_status() -> dict:
     status = load_preview_status()
     
     if not status:
-        print("❌ No running preview")
+        print("[X] No running preview")
         return {"running": False}
     
     port = status.get("port", 3000)
     health_ok, health_msg = check_health(port)
     
     print("\n=== Preview Status ===\n")
-    print(f"🌐 URL: {status.get('url', 'N/A')}")
-    print(f"📁 Project: {status.get('project_path', 'N/A')}")
-    print(f"🏷️  Type: {status.get('project_type', 'N/A')}")
-    print(f"🔢 PID: {status.get('pid', 'N/A')}")
-    print(f"⏱️  Started at: {status.get('started_at', 'N/A')}")
-    print(f"💚 Health: {'OK' if health_ok else health_msg}")
+    print(f"[URL] {status.get('url', 'N/A')}")
+    print(f"[PROJECT] {status.get('project_path', 'N/A')}")
+    print(f"[TYPE] {status.get('project_type', 'N/A')}")
+    print(f"[PID] {status.get('pid', 'N/A')}")
+    print(f"[STARTED] {status.get('started_at', 'N/A')}")
+    print(f"[HEALTH] {'OK' if health_ok else health_msg}")
     
     return {
         "running": True,
@@ -287,7 +287,7 @@ def main():
             time.sleep(1)
             start_preview(project_path, port)
         else:
-            print("❌ No preview to restart")
+            print("[X] No preview to restart")
     
     elif command == "status":
         get_status()
@@ -295,7 +295,7 @@ def main():
     elif command == "check":
         port = int(sys.argv[2]) if len(sys.argv) > 2 else 3000
         ok, msg = check_health(port)
-        print(f"Health check (port {port}): {'✅ OK' if ok else f'❌ {msg}'}")
+        print(f"Health check (port {port}): {'[OK]' if ok else f'[X] {msg}'}")
     
     elif command == "port":
         preferred = int(sys.argv[2]) if len(sys.argv) > 2 else 3000

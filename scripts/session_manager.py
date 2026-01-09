@@ -21,11 +21,17 @@ from datetime import datetime
 from typing import Optional, List, Dict, Any
 from dataclasses import dataclass, field, asdict
 
-# Paths
 CLAUDE_DIR = Path.home() / ".claude"
 DATA_DIR = CLAUDE_DIR / "data"
 PROJECT_FILE = DATA_DIR / "current-project.json"
 CONTEXT_FILE = DATA_DIR / "conversation-context.json"
+
+# Fix Windows console encoding
+try:
+    import sys
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+except:
+    pass
 
 
 @dataclass
@@ -161,7 +167,7 @@ def init_project(name: str, path: str, project_type: str = "nextjs-fullstack"):
     )
     save_context(context)
     
-    print(f"✓ Project started: {name}")
+    print(f"[OK] Project started: {name}")
     print(f"  Path: {path}")
     print(f"  Type: {project_type}")
 
@@ -170,19 +176,19 @@ def add_feature(feature: str, pending: bool = False):
     """Add feature."""
     project = load_project()
     if not project:
-        print("❌ No active project. Run 'init' first.")
+        print("[X] No active project. Run 'init' first.")
         return
     
     if pending:
         if feature not in project.pending_features:
             project.pending_features.append(feature)
-            print(f"✓ Pending feature added: {feature}")
+            print(f"[OK] Pending feature added: {feature}")
     else:
         if feature in project.pending_features:
             project.pending_features.remove(feature)
         if feature not in project.features:
             project.features.append(feature)
-            print(f"✓ Feature added: {feature}")
+            print(f"[OK] Feature added: {feature}")
     
     save_project(project)
 
@@ -197,22 +203,22 @@ def add_decision(topic: str, choice: str, reason: str = ""):
         "timestamp": datetime.now().isoformat()
     })
     save_context(context)
-    print(f"✓ Decision recorded: {topic} → {choice}")
+    print(f"[OK] Decision recorded: {topic} -> {choice}")
 
 
 def update_tech_stack(key: str, value: str):
     """Update tech stack."""
     project = load_project()
     if not project:
-        print("❌ No active project.")
+        print("[X] No active project.")
         return
     
     if hasattr(project.tech_stack, key):
         setattr(project.tech_stack, key, value)
         save_project(project)
-        print(f"✓ Tech stack updated: {key} = {value}")
+        print(f"[OK] Tech stack updated: {key} = {value}")
     else:
-        print(f"❌ Invalid tech stack key: {key}")
+        print(f"[X] Invalid tech stack key: {key}")
 
 
 def add_file(file_path: str):
@@ -229,7 +235,7 @@ def set_status(status: str):
     if project:
         project.status = status
         save_project(project)
-        print(f"✓ Project status: {status}")
+        print(f"[OK] Project status: {status}")
 
 
 def print_status():
@@ -238,17 +244,17 @@ def print_status():
     context = load_context()
     
     if not project:
-        print("❌ No active project.")
+        print("[X] No active project.")
         return
     
     print("\n=== Project Status ===\n")
-    print(f"📁 Project: {project.project_name}")
-    print(f"📂 Path: {project.project_path}")
-    print(f"🏷️  Type: {project.project_type}")
-    print(f"📊 Status: {project.status}")
+    print(f"[PROJECT] {project.project_name}")
+    print(f"[PATH] {project.project_path}")
+    print(f"[TYPE] {project.project_type}")
+    print(f"[STATUS] {project.status}")
     print()
     
-    print("🔧 Tech Stack:")
+    print("[TECH STACK]")
     print(f"   Framework: {project.tech_stack.framework}")
     print(f"   Database: {project.tech_stack.database}")
     print(f"   Styling: {project.tech_stack.styling}")
@@ -256,19 +262,19 @@ def print_status():
         print(f"   Auth: {project.tech_stack.auth}")
     print()
     
-    print(f"✅ Features ({len(project.features)}):")
+    print(f"\n[FEATURES] ({len(project.features)})")
     for f in project.features:
         print(f"   • {f}")
     
     if project.pending_features:
-        print(f"\n⏳ Pending ({len(project.pending_features)}):")
+        print(f"\n[PENDING] ({len(project.pending_features)})")
         for f in project.pending_features:
             print(f"   • {f}")
     
-    print(f"\n📄 Created files: {len(project.files_created)}")
+    print(f"\n[FILES] Created: {len(project.files_created)}")
     
     if context.decisions:
-        print(f"\n📋 Decisions ({len(context.decisions)}):")
+        print(f"\n[DECISIONS] ({len(context.decisions)})")
         for d in context.decisions[-5:]:  # Last 5 decisions
             print(f"   • {d['topic']}: {d['choice']}")
 

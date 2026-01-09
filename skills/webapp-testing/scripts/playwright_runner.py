@@ -14,6 +14,13 @@ import os
 import tempfile
 from datetime import datetime
 
+# Fix Windows console encoding for Unicode output
+try:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+except AttributeError:
+    pass  # Python < 3.7
+
 try:
     from playwright.sync_api import sync_playwright
     PLAYWRIGHT_AVAILABLE = True
@@ -95,12 +102,12 @@ def run_basic_test(url: str, take_screenshot: bool = False) -> dict:
             browser.close()
             
             result["status"] = "success" if result["health"]["loaded"] else "failed"
-            result["summary"] = "✅ Page loaded successfully" if result["status"] == "success" else "❌ Page failed to load"
+            result["summary"] = "[OK] Page loaded successfully" if result["status"] == "success" else "[X] Page failed to load"
             
     except Exception as e:
         result["status"] = "error"
         result["error"] = str(e)
-        result["summary"] = f"❌ Error: {str(e)[:100]}"
+        result["summary"] = f"[X] Error: {str(e)[:100]}"
     
     return result
 

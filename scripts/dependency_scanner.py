@@ -336,7 +336,7 @@ def scan_project(project_path: str, max_files: int = 500) -> Dict[str, Any]:
 def format_markdown(result: Dict) -> str:
     """Format result as markdown for CODEBASE.md."""
     md = []
-    md.append("## 📊 File Dependencies\n")
+    md.append("## File Dependencies\n")
     md.append(f"> Scanned at: {result['scanned_at']}\n")
     
     summary = result["summary"]

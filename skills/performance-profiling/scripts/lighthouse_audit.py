@@ -61,11 +61,11 @@ def get_summary(categories: dict) -> str:
     """Generate summary based on scores."""
     perf = categories.get("performance", {}).get("score", 0) * 100
     if perf >= 90:
-        return "🟢 Excellent performance"
+        return "[OK] Excellent performance"
     elif perf >= 50:
-        return "🟡 Needs improvement"
+        return "[!] Needs improvement"
     else:
-        return "🔴 Poor performance"
+        return "[X] Poor performance"
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
