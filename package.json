@@ -1,0 +1,28 @@
+{
+  "name": "maestro",
+  "version": "0.6.0",
+  "description": "Elite AI Development Orchestrator for Claude Code CLI. Provides specialized agents, modular skills, intelligent hooks, and persistent memory systems.",
+  "author": {
+    "name": "xenitV1",
+    "url": "https://github.com/xenitV1",
+    "twitter": "https://x.com/xenit_v0"
+  },
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "ai-orchestration",
+    "development-tools",
+    "memory-systems",
+    "qa-automation",
+    "ralph-wiggum"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xenitV1/claude-code-maestro"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "type": "commonjs",
+  "private": true
+}

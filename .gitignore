@@ -1,12 +1,1 @@
-# Settings Files
-
-settings.json
-settings.local.json
-.credentials.json
-
-# Environment
-.env.local
-.env.*.local
-
-# docs
-.claude
+.docs
