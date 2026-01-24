@@ -10,7 +10,13 @@ Elite-tier orchestration framework for Claude Code CLI. Supercharges AI developm
 
 ### Installation
 
-Maestro is distributed as a Claude Code Plugin. To install it, you first need to add the repository as a marketplace:
+**One-line Install (Skills.sh):**
+```bash
+npx skills add xenitV1/claude-code-maestro
+```
+
+**Manual Plugin Install:**
+Maestro is distributed as a Claude Code Plugin. To install it manually:
 
 ```bash
 # 1. Add Maestro as a marketplace
